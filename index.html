@@ -1604,13 +1604,15 @@ body {
 /* ========== 联系我 ========== */
 .contact-grid {
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
 }
 
 .contact-info {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
 }
 
 .contact-item {
@@ -2133,6 +2135,11 @@ body {
   }
 
   /* 联系 */
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
   .contact-info {
     grid-template-columns: 1fr;
     gap: 0.8rem;
