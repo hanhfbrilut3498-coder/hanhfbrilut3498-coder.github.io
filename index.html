@@ -1605,28 +1605,59 @@ body {
   padding: 0.4rem 0.8rem;
   border: 1px solid var(--border);
   color: var(--muted);
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-item::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s ease;
+  opacity: 0.15;
+  z-index: 0;
 }
 
 .skill-item:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(245, 166, 35, 0.05);
+  background: rgba(245, 166, 35, 0.08);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(245, 166, 35, 0.2);
+}
+
+.skill-item:hover::before {
+  width: 150%;
+  height: 150%;
+}
+
+.skill-item:active {
+  transform: translateY(0) scale(0.98);
 }
 
 /* ========== 联系我 ========== */
+.contact-section {
+  margin-bottom: 4rem;
+}
+
 .contact-grid {
   display: grid;
   gap: 2rem;
-  grid-template-columns: 1fr 1fr;
-  align-items: start;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
 }
 
 .contact-info {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
+  display: contents;
 }
 
 .contact-item {
@@ -1677,14 +1708,22 @@ body {
 }
 
 /* ========== 弹幕留言板 ========== */
-.danmaku-board {
-  background: rgba(255, 255, 255, 0.5);
+.guestbook-section {
+  padding-top: 2rem;
   border-top: 1px solid var(--border);
+}
+
+.danmaku-board {
+  background: var(--card);
+  border: 1px solid var(--border);
   padding: 3rem 2rem;
   position: relative;
   overflow: hidden;
   border-radius: 16px;
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(44, 36, 32, 0.05);
 }
 
 .danmaku-title {
@@ -1835,8 +1874,16 @@ body {
 
   /* 联系与留言板 */
   .contact-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .contact-item {
+    padding: 1.5rem 1rem;
+  }
+
+  .danmaku-board {
+    padding: 2rem 1.5rem;
   }
 
   .footer {
@@ -2156,16 +2203,20 @@ body {
   /* 联系 */
   .contact-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .contact-info {
-    grid-template-columns: 1fr;
     gap: 0.8rem;
   }
 
   .contact-item {
-    padding: 1.5rem 1rem;
+    padding: 1.2rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .contact-icon {
+    margin-bottom: 0;
+    font-size: 1.3rem;
   }
 
   /* 弹幕 */
@@ -2901,8 +2952,8 @@ body {
     <h2 class="section-title">Contact</h2>
     <div class="section-divider"></div>
   </div>
-  <div class="contact-grid">
-    <div class="contact-info">
+  <div class="contact-section">
+    <div class="contact-grid">
       <div class="contact-item reveal">
         <div class="contact-icon">&#9993;</div>
         <div>
@@ -2925,14 +2976,22 @@ body {
         </div>
       </div>
     </div>
-    <!-- 弹幕留言板 -->
-    <div class="danmaku-board reveal">
-      <div class="danmaku-title">留言板</div>
-      <div class="danmaku-area" id="danmakuArea"></div>
-      <div class="danmaku-input-row">
-        <input type="text" class="danmaku-input" id="danmakuInput" placeholder="写下你的留言..." maxlength="50">
-        <button class="danmaku-submit" onclick="sendDanmaku()">发送</button>
-      </div>
+  </div>
+</section>
+
+<!-- ==================== 留言板 ==================== -->
+<section class="section guestbook-section" id="guestbook">
+  <div class="section-header reveal">
+    <div class="section-number">08 / 留言</div>
+    <h2 class="section-title">Guestbook</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="danmaku-board reveal">
+    <div class="danmaku-title">留言板</div>
+    <div class="danmaku-area" id="danmakuArea"></div>
+    <div class="danmaku-input-row">
+      <input type="text" class="danmaku-input" id="danmakuInput" placeholder="写下你的留言..." maxlength="50">
+      <button class="danmaku-submit" onclick="sendDanmaku()">发送</button>
     </div>
   </div>
 </section>
