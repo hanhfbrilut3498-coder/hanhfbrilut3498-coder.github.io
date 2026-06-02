@@ -1670,7 +1670,8 @@ body {
   position: relative;
 }
 
-.skill-group.highlight::after {
+/* highlight卡片用独立标签元素，不覆盖::after光晕 */
+.skill-group.highlight::before {
   content: 'AI';
   position: absolute;
   top: -10px;
@@ -1682,6 +1683,7 @@ body {
   color: #fff;
   padding: 0.2rem 0.6rem;
   border-radius: 10px;
+  z-index: 2;
 }
 
 .skill-group-title {
