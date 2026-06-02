@@ -524,6 +524,8 @@ body {
   -webkit-backface-visibility: hidden;
   transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease, text-shadow 0.1s ease;
   transform-style: preserve-3d;
+  /* translateZ建立z轴层级：文字在前，阴影在后，避免阴影遮挡文字 */
+  transform: translateZ(2px);
   /* 默认色块阴影（居中） */
   text-shadow:
     4px 4px 0 rgba(245,166,35,1),
@@ -535,7 +537,7 @@ body {
 
 /* 正面 - Welcome here（默认可见） */
 .hero-name-front {
-  transform: rotateY(0deg);
+  transform: translateZ(2px) rotateY(0deg);
   opacity: 1;
 }
 
@@ -544,7 +546,7 @@ body {
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translateX(-50%) rotateY(180deg);
+  transform: translateX(-50%) translateZ(2px) rotateY(180deg);
   opacity: 0;
   white-space: nowrap;
   font-family: 'Noto Serif SC', serif;
@@ -554,12 +556,12 @@ body {
 
 /* 触碰翻转类（由JS添加/移除） */
 .hero-name-flipper.is-flipped .hero-name-front {
-  transform: rotateY(-180deg);
+  transform: translateZ(2px) rotateY(-180deg);
   opacity: 0;
 }
 
 .hero-name-flipper.is-flipped .hero-name-back {
-  transform: translateX(-50%) rotateY(0deg);
+  transform: translateX(-50%) translateZ(2px) rotateY(0deg);
   opacity: 1;
 }
 
