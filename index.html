@@ -4,12 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>李嘉豪 | 影视后期剪辑师 & AI影视创作探索者</title>
-<!-- Fontshare CDN for Clash Display (stylish, high-design) -->
-<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap">
-<!-- Google Fonts -->
+<!-- Google Fonts - Lilita One (活泼粗体) + 其他字体 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lilita+One&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ========== CSS 变量 & 基础重置 ========== */
 :root {
@@ -491,22 +489,32 @@ body {
   animation: fadeInUp 1s ease 0.2s forwards;
 }
 
-/* 3D水平翻转容器 - 支持鼠标跟随 + 翻转叠加 */
-.hero-name-flipper {
-  font-family: 'Clash Display', sans-serif;
-  font-size: clamp(3.5rem, 12vw, 9rem);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.01em;
-  color: #fff;
+/* ========== 首页大标题：wrapper(360°鼠标跟随) + flipper(悬浮翻转) ========== */
+
+/* 外层wrapper - 负责360°鼠标跟随旋转 */
+.hero-name-wrapper {
+  display: inline-block;
   margin-bottom: 1rem;
-  perspective: 1200px;
+  perspective: 800px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* 内层flipper - 负责悬浮水平翻转 */
+.hero-name-flipper {
+  font-family: 'Lilita One', cursive;
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
   transform-style: preserve-3d;
   display: inline-block;
   position: relative;
   width: auto;
   height: auto;
   cursor: pointer;
+  transition: none;
 }
 
 /* 正面和背面通用样式 */
@@ -515,17 +523,14 @@ body {
   display: inline-block;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease, filter 0.7s ease;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
   transform-style: preserve-3d;
-  /* 橙色长条阴影 - 视觉立体化 */
+  /* 硬边橙色阴影 - 复古印刷叠印效果 */
   text-shadow:
-    0 2px 0 rgba(255,255,255,0.2),
-    0 8px 16px rgba(245,166,35,0.35),
-    0 20px 50px rgba(245,166,35,0.5),
-    0 40px 100px rgba(245,166,35,0.3),
-    0 60px 150px rgba(245,140,0,0.15);
-  /* 悬浮时增强阴影 */
-  filter: brightness(1);
+    3px 3px 0 rgba(245,166,35,0.9),
+    6px 6px 0 rgba(245,140,0,0.7),
+    9px 9px 0 rgba(230,120,0,0.5),
+    12px 12px 0 rgba(200,100,0,0.3);
 }
 
 /* 正面 - Welcome here（默认可见） */
@@ -542,28 +547,20 @@ body {
   transform: translateX(-50%) rotateY(180deg);
   opacity: 0;
   white-space: nowrap;
-  /* 中文用回思源宋体 */
-  font-family: 'Noto Serif SC', 'Clash Display', sans-serif;
+  font-family: 'Noto Serif SC', serif;
   font-weight: 600;
+  font-size: clamp(4rem, 14vw, 11rem);
 }
 
-/* 悬浮时：翻转 + 阴影增强 */
+/* 悬浮时：翻转 */
 .hero-name-flipper:hover .hero-name-front {
   transform: rotateY(-180deg);
   opacity: 0;
-  filter: brightness(1.1);
 }
 
 .hero-name-flipper:hover .hero-name-back {
   transform: translateX(-50%) rotateY(0deg);
   opacity: 1;
-  filter: brightness(1.1);
-  text-shadow:
-    0 2px 0 rgba(255,255,255,0.2),
-    0 8px 16px rgba(245,166,35,0.4),
-    0 20px 50px rgba(245,166,35,0.6),
-    0 40px 100px rgba(245,166,35,0.35),
-    0 60px 150px rgba(245,140,0,0.2);
 }
 
 /* 逐字翻转入场动画 */
@@ -2777,12 +2774,14 @@ body {
     </div>
 
     <div class="hero-subtitle-top">Film Editor & AI Creator</div>
-    <div class="hero-name-flipper" id="welcomeText">
-      <div class="hero-name-front">
-        <span class="char">W</span><span class="char">e</span><span class="char">l</span><span class="char">c</span><span class="char">o</span><span class="char">m</span><span class="char">e</span><span class="char">&nbsp;</span><span class="char">h</span><span class="char">e</span><span class="char">r</span><span class="char">e</span>
-      </div>
-      <div class="hero-name-back">
-        <span class="char">李</span><span class="char">嘉</span><span class="char">豪</span>
+    <div class="hero-name-wrapper" id="welcomeWrapper">
+      <div class="hero-name-flipper" id="welcomeText">
+        <div class="hero-name-front">
+          <span class="char">W</span><span class="char">e</span><span class="char">l</span><span class="char">c</span><span class="char">o</span><span class="char">m</span><span class="char">e</span><span class="char">&nbsp;</span><span class="char">h</span><span class="char">e</span><span class="char">r</span><span class="char">e</span>
+        </div>
+        <div class="hero-name-back">
+          <span class="char">李</span><span class="char">嘉</span><span class="char">豪</span>
+        </div>
       </div>
     </div>
     <p class="hero-role" id="typewriterText"><span class="cursor"></span></p>
@@ -3345,71 +3344,35 @@ honorItems.forEach(function(item) {
   honorObserver.observe(item);
 });
 
-// ========== Welcome here 鼠标跟随 + 翻转叠加效果 ==========
+// ========== 首页大标题：wrapper 360°鼠标跟随 + flipper 悬浮翻转 ==========
 (function() {
+  const wrapper = document.getElementById('welcomeWrapper');
   const flipper = document.getElementById('welcomeText');
-  const front = flipper ? flipper.querySelector('.hero-name-front') : null;
-  const back = flipper ? flipper.querySelector('.hero-name-back') : null;
-  if (!flipper || !front || !back) return;
+  if (!wrapper || !flipper) return;
 
-  let isHovered = false;
-  const MAX_RX = 18;
-  const MAX_RY = 22;
+  let currentAngle = 0;
+  let targetAngle = 0;
+  let raf = null;
 
-  // 统一更新所有面的transform
-  function updateTransforms(rx, ry) {
-    const frontTarget = isHovered ? -180 : 0;
-    const backTarget = isHovered ? 0 : 180;
-    // mouse tracking 的 rotateX/Y 叠加在翻转 rotateY 之上
-    front.style.transform = `rotateY(${frontTarget + ry}deg)`;
-    back.style.transform = `translateX(-50%) rotateY(${backTarget + ry}deg)`;
-  }
-
-  // 初始状态
-  updateTransforms(0, 0);
-
-  // 悬浮状态切换
-  flipper.addEventListener('mouseenter', function() {
-    isHovered = true;
-    updateTransforms(0, currentRY);
-  });
-
-  flipper.addEventListener('mouseleave', function() {
-    isHovered = false;
-    updateTransforms(0, currentRY);
-  });
-
-  // 鼠标跟随
-  let currentRY = 0;
-  let targetRY = 0;
-  let raf;
-
-  function getElementCenter() {
-    const rect = flipper.getBoundingClientRect();
-    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-  }
-
+  // 根据鼠标X位置映射到 -180° ~ +180°（360°全周）
   document.addEventListener('mousemove', function(e) {
-    const center = getElementCenter();
-    const dx = e.clientX - center.x;
-    const dy = e.clientY - center.y;
-    // 映射到最大旋转角度
-    targetRY = (dx / window.innerWidth) * MAX_RY * 2;
-    targetRY = Math.max(-MAX_RY, Math.min(MAX_RY, targetRY));
-
-    if (!raf) raf = requestAnimationFrame(smoothUpdate);
+    const ratio = e.clientX / window.innerWidth; // 0~1
+    targetAngle = (ratio - 0.5) * 360; // -180 ~ +180
+    if (!raf) raf = requestAnimationFrame(tick);
   });
 
-  function smoothUpdate() {
+  function tick() {
     raf = null;
-    currentRY += (targetRY - currentRY) * 0.08;
-    updateTransforms(0, currentRY);
+    // 平滑插值
+    currentAngle += (targetAngle - currentAngle) * 0.06;
+    // 应用到外层wrapper（鼠标跟随360°旋转）
+    wrapper.style.transform = 'rotateY(' + currentAngle + 'deg)';
   }
 
+  // 鼠标离开页面时复位
   document.addEventListener('mouseleave', function() {
-    targetRY = 0;
-    currentRY = 0;
-    updateTransforms(0, 0);
+    targetAngle = 0;
+    if (!raf) raf = requestAnimationFrame(tick);
   });
 })();
 
