@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>李嘉豪 | 影视后期剪辑师 & AI影视创作探索者</title>
+<!-- Fontshare CDN for Clash Display (stylish, high-design) -->
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap">
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -489,13 +491,13 @@ body {
   animation: fadeInUp 1s ease 0.2s forwards;
 }
 
-/* 3D水平翻转容器 */
+/* 3D水平翻转容器 - 支持鼠标跟随 + 翻转叠加 */
 .hero-name-flipper {
-  font-family: 'Nunito', sans-serif;
-  font-size: clamp(3rem, 10vw, 7rem);
-  font-weight: 700;
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
   color: #fff;
   margin-bottom: 1rem;
   perspective: 1200px;
@@ -513,14 +515,17 @@ body {
   display: inline-block;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.7s ease;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease, filter 0.7s ease;
   transform-style: preserve-3d;
-  /* 色块阴影 - 视觉立体化 */
+  /* 橙色长条阴影 - 视觉立体化 */
   text-shadow:
-    0 1px 0 rgba(255,255,255,0.15),
-    0 4px 8px rgba(0,0,0,0.25),
-    0 8px 24px rgba(0,0,0,0.35),
-    0 2px 3px rgba(245,166,35,0.2);
+    0 2px 0 rgba(255,255,255,0.2),
+    0 8px 16px rgba(245,166,35,0.35),
+    0 20px 50px rgba(245,166,35,0.5),
+    0 40px 100px rgba(245,166,35,0.3),
+    0 60px 150px rgba(245,140,0,0.15);
+  /* 悬浮时增强阴影 */
+  filter: brightness(1);
 }
 
 /* 正面 - Welcome here（默认可见） */
@@ -537,17 +542,28 @@ body {
   transform: translateX(-50%) rotateY(180deg);
   opacity: 0;
   white-space: nowrap;
+  /* 中文用回思源宋体 */
+  font-family: 'Noto Serif SC', 'Clash Display', sans-serif;
+  font-weight: 600;
 }
 
-/* 悬浮时：正面翻走隐藏，背面翻入显示 */
+/* 悬浮时：翻转 + 阴影增强 */
 .hero-name-flipper:hover .hero-name-front {
   transform: rotateY(-180deg);
   opacity: 0;
+  filter: brightness(1.1);
 }
 
 .hero-name-flipper:hover .hero-name-back {
   transform: translateX(-50%) rotateY(0deg);
   opacity: 1;
+  filter: brightness(1.1);
+  text-shadow:
+    0 2px 0 rgba(255,255,255,0.2),
+    0 8px 16px rgba(245,166,35,0.4),
+    0 20px 50px rgba(245,166,35,0.6),
+    0 40px 100px rgba(245,166,35,0.35),
+    0 60px 150px rgba(245,140,0,0.2);
 }
 
 /* 逐字翻转入场动画 */
@@ -2048,7 +2064,7 @@ body {
   }
 
   .hero-name-flipper {
-    font-size: clamp(2.5rem, 12vw, 4.5rem);
+    font-size: clamp(2.8rem, 14vw, 5.5rem);
   }
 
   .hero-role {
@@ -2337,7 +2353,7 @@ body {
 /* --- 小屏手机 (≤480px) --- */
 @media (max-width: 480px) {
   .hero-name-flipper {
-    font-size: clamp(2rem, 14vw, 3.5rem);
+    font-size: clamp(2.2rem, 16vw, 4rem);
   }
 
   .hero-avatar {
@@ -2467,7 +2483,7 @@ body {
 /* --- 超小屏 (≤360px) --- */
 @media (max-width: 360px) {
   .hero-name-flipper {
-    font-size: clamp(1.8rem, 12vw, 2.8rem);
+    font-size: clamp(2rem, 14vw, 3.2rem);
   }
 
   .section-title {
@@ -2506,7 +2522,7 @@ body {
   }
 
   .hero-name-flipper {
-    font-size: clamp(4rem, 10vw, 8rem);
+    font-size: clamp(5rem, 12vw, 10rem);
   }
 
   .section-title {
@@ -2604,7 +2620,7 @@ body {
   }
 
   .hero-name-flipper {
-    font-size: clamp(1.8rem, 7vw, 3.5rem);
+    font-size: clamp(2rem, 8vw, 4rem);
   }
 
   .hero-buttons {
@@ -3328,6 +3344,74 @@ const honorObserver = new IntersectionObserver(function(entries) {
 honorItems.forEach(function(item) {
   honorObserver.observe(item);
 });
+
+// ========== Welcome here 鼠标跟随 + 翻转叠加效果 ==========
+(function() {
+  const flipper = document.getElementById('welcomeText');
+  const front = flipper ? flipper.querySelector('.hero-name-front') : null;
+  const back = flipper ? flipper.querySelector('.hero-name-back') : null;
+  if (!flipper || !front || !back) return;
+
+  let isHovered = false;
+  const MAX_RX = 18;
+  const MAX_RY = 22;
+
+  // 统一更新所有面的transform
+  function updateTransforms(rx, ry) {
+    const frontTarget = isHovered ? -180 : 0;
+    const backTarget = isHovered ? 0 : 180;
+    // mouse tracking 的 rotateX/Y 叠加在翻转 rotateY 之上
+    front.style.transform = `rotateY(${frontTarget + ry}deg)`;
+    back.style.transform = `translateX(-50%) rotateY(${backTarget + ry}deg)`;
+  }
+
+  // 初始状态
+  updateTransforms(0, 0);
+
+  // 悬浮状态切换
+  flipper.addEventListener('mouseenter', function() {
+    isHovered = true;
+    updateTransforms(0, currentRY);
+  });
+
+  flipper.addEventListener('mouseleave', function() {
+    isHovered = false;
+    updateTransforms(0, currentRY);
+  });
+
+  // 鼠标跟随
+  let currentRY = 0;
+  let targetRY = 0;
+  let raf;
+
+  function getElementCenter() {
+    const rect = flipper.getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  }
+
+  document.addEventListener('mousemove', function(e) {
+    const center = getElementCenter();
+    const dx = e.clientX - center.x;
+    const dy = e.clientY - center.y;
+    // 映射到最大旋转角度
+    targetRY = (dx / window.innerWidth) * MAX_RY * 2;
+    targetRY = Math.max(-MAX_RY, Math.min(MAX_RY, targetRY));
+
+    if (!raf) raf = requestAnimationFrame(smoothUpdate);
+  });
+
+  function smoothUpdate() {
+    raf = null;
+    currentRY += (targetRY - currentRY) * 0.08;
+    updateTransforms(0, currentRY);
+  }
+
+  document.addEventListener('mouseleave', function() {
+    targetRY = 0;
+    currentRY = 0;
+    updateTransforms(0, 0);
+  });
+})();
 
 // ========== 粒子效果 ==========
 const canvas = document.getElementById('particlesCanvas');
