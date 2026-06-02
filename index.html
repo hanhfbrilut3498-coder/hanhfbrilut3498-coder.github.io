@@ -1923,6 +1923,44 @@ body {
 
 /* ========== 响应式 ========== */
 
+/* --- 小桌面适配 (≤1200px) --- */
+@media (max-width: 1200px) {
+  .section {
+    padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .about-grid {
+    gap: 1.5rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+
+  .honors-list {
+    gap: 0.8rem;
+  }
+
+  .video-grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .contact-grid {
+    gap: 1rem;
+  }
+
+  .footer {
+    padding: 2rem 1.5rem;
+  }
+}
+
 /* --- 平板适配 (≤1024px) --- */
 @media (max-width: 1024px) {
   .section {
@@ -2496,6 +2534,59 @@ body {
     font-size: 0.72rem;
     padding: 0.8rem 1.8rem;
   }
+
+  /* 荣誉列表 */
+  .honors-list {
+    gap: 0.6rem;
+  }
+
+  .honor-item {
+    padding: 0.8rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+
+  .honor-year {
+    font-size: 0.65rem;
+  }
+
+  .honor-name {
+    font-size: 0.75rem;
+  }
+
+  /* 时间线 */
+  .education-card,
+  .experience-card {
+    padding: 1rem;
+  }
+
+  .edu-school,
+  .exp-company {
+    font-size: 0.85rem;
+  }
+
+  .edu-major,
+  .exp-title {
+    font-size: 0.75rem;
+  }
+
+  /* 页脚 */
+  .footer {
+    padding: 1.5rem 1rem;
+    font-size: 0.7rem;
+  }
+
+  /* 模态框 */
+  .modal-content {
+    margin: 0.5rem;
+    max-height: 90vh;
+  }
+
+  .modal-body {
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
 }
 
 /* --- 超小屏 (≤360px) --- */
@@ -2530,6 +2621,57 @@ body {
   .project-category-card {
     gap: 0.8rem;
     padding: 1.2rem 1rem;
+  }
+
+  /* 荣誉 */
+  .honor-item {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .honor-year {
+    font-size: 0.6rem;
+  }
+
+  .honor-name {
+    font-size: 0.7rem;
+  }
+
+  /* 时间线 */
+  .education-card,
+  .experience-card {
+    padding: 0.8rem;
+  }
+
+  .edu-school,
+  .exp-company {
+    font-size: 0.8rem;
+  }
+
+  /* 页脚 */
+  .footer {
+    padding: 1rem 0.8rem;
+    font-size: 0.65rem;
+  }
+
+  /* 模态框 */
+  .modal-content {
+    margin: 0.3rem;
+    padding: 1rem 0.8rem;
+  }
+
+  /* 弹幕留言板 */
+  .danmaku-board {
+    padding: 1.5rem 1rem;
+  }
+
+  .danmaku-input {
+    font-size: 0.7rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .danmaku-submit {
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
   }
 }
 
