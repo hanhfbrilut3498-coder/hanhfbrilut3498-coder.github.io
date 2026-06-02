@@ -7,7 +7,7 @@
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ========== CSS 变量 & 基础重置 ========== */
 :root {
@@ -489,17 +489,16 @@ body {
   animation: fadeInUp 1s ease 0.2s forwards;
 }
 
-/* 3D翻转容器 */
+/* 3D水平翻转容器 */
 .hero-name-flipper {
-  font-family: var(--font-display);
+  font-family: 'Nunito', sans-serif;
   font-size: clamp(3rem, 10vw, 7rem);
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   color: #fff;
   margin-bottom: 1rem;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
-  perspective: 1000px;
+  perspective: 1200px;
   transform-style: preserve-3d;
   display: inline-block;
   position: relative;
@@ -513,31 +512,42 @@ body {
 .hero-name-back {
   display: inline-block;
   backface-visibility: hidden;
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.7s ease;
   transform-style: preserve-3d;
+  /* 色块阴影 - 视觉立体化 */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.15),
+    0 4px 8px rgba(0,0,0,0.25),
+    0 8px 24px rgba(0,0,0,0.35),
+    0 2px 3px rgba(245,166,35,0.2);
 }
 
-/* 正面 - Welcome here */
+/* 正面 - Welcome here（默认可见） */
 .hero-name-front {
-  transform: rotateX(0deg);
+  transform: rotateY(0deg);
+  opacity: 1;
 }
 
-/* 背面 - 李嘉豪 */
+/* 背面 - 李嘉豪（默认隐藏） */
 .hero-name-back {
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translateX(-50%) rotateX(180deg);
+  transform: translateX(-50%) rotateY(180deg);
+  opacity: 0;
   white-space: nowrap;
 }
 
-/* 悬浮时翻转 */
+/* 悬浮时：正面翻走隐藏，背面翻入显示 */
 .hero-name-flipper:hover .hero-name-front {
-  transform: rotateX(180deg);
+  transform: rotateY(-180deg);
+  opacity: 0;
 }
 
 .hero-name-flipper:hover .hero-name-back {
-  transform: translateX(-50%) rotateX(0deg);
+  transform: translateX(-50%) rotateY(0deg);
+  opacity: 1;
 }
 
 /* 逐字翻转入场动画 */
