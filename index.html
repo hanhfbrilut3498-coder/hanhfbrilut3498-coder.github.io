@@ -489,7 +489,8 @@ body {
   animation: fadeInUp 1s ease 0.2s forwards;
 }
 
-.hero-name {
+/* 3D翻转容器 */
+.hero-name-flipper {
   font-family: var(--font-display);
   font-size: clamp(3rem, 10vw, 7rem);
   font-weight: 300;
@@ -501,30 +502,71 @@ body {
   perspective: 1000px;
   transform-style: preserve-3d;
   display: inline-block;
-  transition: transform 0.1s ease-out;
-  will-change: transform;
+  position: relative;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+/* 正面和背面通用样式 */
+.hero-name-front,
+.hero-name-back {
+  display: inline-block;
+  backface-visibility: hidden;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+
+/* 正面 - Welcome here */
+.hero-name-front {
+  transform: rotateX(0deg);
+}
+
+/* 背面 - 李嘉豪 */
+.hero-name-back {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) rotateX(180deg);
+  white-space: nowrap;
+}
+
+/* 悬浮时翻转 */
+.hero-name-flipper:hover .hero-name-front {
+  transform: rotateX(180deg);
+}
+
+.hero-name-flipper:hover .hero-name-back {
+  transform: translateX(-50%) rotateX(0deg);
 }
 
 /* 逐字翻转入场动画 */
-.hero-name .char {
+.hero-name-front .char,
+.hero-name-back .char {
   display: inline-block;
   opacity: 0;
   transform: translateY(80px) rotateX(90deg);
   animation: charFlipIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
-.hero-name .char:nth-child(1) { animation-delay: 0.4s; }
-.hero-name .char:nth-child(2) { animation-delay: 0.48s; }
-.hero-name .char:nth-child(3) { animation-delay: 0.56s; }
-.hero-name .char:nth-child(4) { animation-delay: 0.64s; }
-.hero-name .char:nth-child(5) { animation-delay: 0.72s; }
-.hero-name .char:nth-child(6) { animation-delay: 0.80s; }
-.hero-name .char:nth-child(7) { animation-delay: 0.88s; }
-.hero-name .char:nth-child(8) { animation-delay: 0.96s; }
-.hero-name .char:nth-child(9) { animation-delay: 1.04s; }
-.hero-name .char:nth-child(10) { animation-delay: 1.12s; }
-.hero-name .char:nth-child(11) { animation-delay: 1.20s; }
-.hero-name .char:nth-child(12) { animation-delay: 1.28s; }
+/* Welcome here 逐字延迟 */
+.hero-name-front .char:nth-child(1) { animation-delay: 0.4s; }
+.hero-name-front .char:nth-child(2) { animation-delay: 0.48s; }
+.hero-name-front .char:nth-child(3) { animation-delay: 0.56s; }
+.hero-name-front .char:nth-child(4) { animation-delay: 0.64s; }
+.hero-name-front .char:nth-child(5) { animation-delay: 0.72s; }
+.hero-name-front .char:nth-child(6) { animation-delay: 0.80s; }
+.hero-name-front .char:nth-child(7) { animation-delay: 0.88s; }
+.hero-name-front .char:nth-child(8) { animation-delay: 0.96s; }
+.hero-name-front .char:nth-child(9) { animation-delay: 1.04s; }
+.hero-name-front .char:nth-child(10) { animation-delay: 1.12s; }
+.hero-name-front .char:nth-child(11) { animation-delay: 1.20s; }
+.hero-name-front .char:nth-child(12) { animation-delay: 1.28s; }
+
+/* 李嘉豪 逐字延迟 */
+.hero-name-back .char:nth-child(1) { animation-delay: 0.4s; }
+.hero-name-back .char:nth-child(2) { animation-delay: 0.55s; }
+.hero-name-back .char:nth-child(3) { animation-delay: 0.7s; }
 
 @keyframes charFlipIn {
   to {
@@ -1995,7 +2037,7 @@ body {
     letter-spacing: 0.2em;
   }
 
-  .hero-name {
+  .hero-name-flipper {
     font-size: clamp(2.5rem, 12vw, 4.5rem);
   }
 
@@ -2284,7 +2326,7 @@ body {
 
 /* --- 小屏手机 (≤480px) --- */
 @media (max-width: 480px) {
-  .hero-name {
+  .hero-name-flipper {
     font-size: clamp(2rem, 14vw, 3.5rem);
   }
 
@@ -2414,7 +2456,7 @@ body {
 
 /* --- 超小屏 (≤360px) --- */
 @media (max-width: 360px) {
-  .hero-name {
+  .hero-name-flipper {
     font-size: clamp(1.8rem, 12vw, 2.8rem);
   }
 
@@ -2453,7 +2495,7 @@ body {
     padding: clamp(5rem, 8vw, 10rem) clamp(2rem, 5vw, 5rem);
   }
 
-  .hero-name {
+  .hero-name-flipper {
     font-size: clamp(4rem, 10vw, 8rem);
   }
 
@@ -2551,7 +2593,7 @@ body {
     height: 64px;
   }
 
-  .hero-name {
+  .hero-name-flipper {
     font-size: clamp(1.8rem, 7vw, 3.5rem);
   }
 
@@ -2709,9 +2751,14 @@ body {
     </div>
 
     <div class="hero-subtitle-top">Film Editor & AI Creator</div>
-    <h1 class="hero-name" id="welcomeText">
-      <span class="char">W</span><span class="char">e</span><span class="char">l</span><span class="char">c</span><span class="char">o</span><span class="char">m</span><span class="char">e</span><span class="char">&nbsp;</span><span class="char">h</span><span class="char">e</span><span class="char">r</span><span class="char">e</span>
-    </h1>
+    <div class="hero-name-flipper" id="welcomeText">
+      <div class="hero-name-front">
+        <span class="char">W</span><span class="char">e</span><span class="char">l</span><span class="char">c</span><span class="char">o</span><span class="char">m</span><span class="char">e</span><span class="char">&nbsp;</span><span class="char">h</span><span class="char">e</span><span class="char">r</span><span class="char">e</span>
+      </div>
+      <div class="hero-name-back">
+        <span class="char">李</span><span class="char">嘉</span><span class="char">豪</span>
+      </div>
+    </div>
     <p class="hero-role" id="typewriterText"><span class="cursor"></span></p>
     <p class="hero-quote">用镜头雕刻时光，以技术驱动创意</p>
     <div class="hero-buttons">
@@ -3271,50 +3318,6 @@ const honorObserver = new IntersectionObserver(function(entries) {
 honorItems.forEach(function(item) {
   honorObserver.observe(item);
 });
-
-// ========== Welcome here 3D鼠标跟随效果 ==========
-(function() {
-  const welcomeText = document.getElementById('welcomeText');
-  if (!welcomeText) return;
-
-  // 获取元素中心点
-  function getElementCenter(element) {
-    const rect = element.getBoundingClientRect();
-    return {
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2
-    };
-  }
-
-  // 鼠标移动事件
-  document.addEventListener('mousemove', function(e) {
-    const center = getElementCenter(welcomeText);
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-
-    // 计算鼠标相对于元素中心的角度
-    const deltaX = mouseX - center.x;
-    const deltaY = mouseY - center.y;
-
-    // 计算旋转角度（限制最大角度为25度）
-    const maxRotation = 25;
-    const rotateY = Math.max(-maxRotation, Math.min(maxRotation, (deltaX / window.innerWidth) * maxRotation * 2));
-    const rotateX = Math.max(-maxRotation, Math.min(maxRotation, -(deltaY / window.innerHeight) * maxRotation * 2));
-
-    // 应用3D变换 - 位置保持不动，只旋转
-    welcomeText.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  });
-
-  // 鼠标离开页面时复位
-  document.addEventListener('mouseleave', function() {
-    welcomeText.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-  });
-
-  // 窗口大小改变时更新
-  window.addEventListener('resize', function() {
-    welcomeText.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-  });
-})();
 
 // ========== 粒子效果 ==========
 const canvas = document.getElementById('particlesCanvas');
