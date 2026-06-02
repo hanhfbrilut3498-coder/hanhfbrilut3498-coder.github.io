@@ -1670,8 +1670,7 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .danmaku-title {
@@ -2626,7 +2625,7 @@ body {
   <div class="hero-content">
     <!-- 头像 -->
     <div class="hero-avatar-container">
-      <img src="avatar.jpg" alt="李嘉豪" class="hero-avatar" id="heroAvatar">
+      <img src="avatar.jpg" alt="李嘉豪" class="hero-avatar" id="heroAvatar" loading="eager" decoding="async">
       <div class="avatar-name-tooltip">李嘉豪</div>
     </div>
 
@@ -2661,7 +2660,7 @@ body {
       <p>我相信技术是创意的延伸——每一帧画面都承载着故事，每一次剪辑都是对时间的重新雕刻。从传统影视制作到AI辅助创作，我始终在探索影像表达的边界。</p>
     </div>
     <div class="about-info-card reveal">
-      <img src="avatar.jpg" alt="李嘉豪" class="about-avatar">
+      <img src="avatar.jpg" alt="李嘉豪" class="about-avatar" loading="lazy" decoding="async">
       <div class="info-item">
         <span class="info-label">Email</span>
         <span class="info-value">1845609177@qq.com</span>
@@ -3268,11 +3267,32 @@ function animateParticles() {
 initParticles();
 animateParticles();
 
-// 视频错误处理
+// 视频处理 - 支持手机和桌面
 const heroVideo = document.getElementById('heroVideo');
+const heroVideoContainer = document.getElementById('heroVideoContainer');
+
+// 错误处理
 heroVideo.addEventListener('error', function() {
-  document.getElementById('heroVideoContainer').classList.add('error');
+  heroVideoContainer.classList.add('error');
 });
+
+// 自动播放失败时，尝试用户交互后播放
+if (heroVideo) {
+  heroVideo.play().catch(function(error) {
+    console.log('自动播放被阻止:', error);
+    // 添加点击/触摸事件来启动视频
+    const startVideo = function() {
+      heroVideo.play().catch(function(e) {
+        console.log('播放失败:', e);
+        heroVideoContainer.classList.add('error');
+      });
+      document.removeEventListener('click', startVideo);
+      document.removeEventListener('touchstart', startVideo);
+    };
+    document.addEventListener('click', startVideo, { once: true });
+    document.addEventListener('touchstart', startVideo, { once: true });
+  });
+}
 
 // ========== 项目浮层（二级页面） ==========
 function openProjectPanel(category) {
