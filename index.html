@@ -489,7 +489,7 @@ body {
   animation: fadeInUp 1s ease 0.2s forwards;
 }
 
-/* ========== 首页大标题：wrapper(360°鼠标跟随) + flipper(悬浮翻转) ========== */
+/* ========== 首页大标题：wrapper(360°鼠标跟随) + flipper(触碰翻转) ========== */
 
 /* 外层wrapper - 负责360°鼠标跟随旋转 */
 .hero-name-wrapper {
@@ -500,10 +500,10 @@ body {
   will-change: transform;
 }
 
-/* 内层flipper - 负责悬浮水平翻转 */
+/* 内层flipper - 负责触碰水平翻转 */
 .hero-name-flipper {
   font-family: 'Lilita One', cursive;
-  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-size: clamp(3.2rem, 11vw, 8rem);
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0.02em;
@@ -514,7 +514,6 @@ body {
   width: auto;
   height: auto;
   cursor: pointer;
-  transition: none;
 }
 
 /* 正面和背面通用样式 */
@@ -549,16 +548,16 @@ body {
   white-space: nowrap;
   font-family: 'Noto Serif SC', serif;
   font-weight: 600;
-  font-size: clamp(4rem, 14vw, 11rem);
+  font-size: clamp(3.5rem, 12vw, 9rem);
 }
 
-/* 悬浮时：翻转 */
-.hero-name-flipper:hover .hero-name-front {
+/* 触碰翻转类（由JS添加/移除） */
+.hero-name-flipper.is-flipped .hero-name-front {
   transform: rotateY(-180deg);
   opacity: 0;
 }
 
-.hero-name-flipper:hover .hero-name-back {
+.hero-name-flipper.is-flipped .hero-name-back {
   transform: translateX(-50%) rotateY(0deg);
   opacity: 1;
 }
@@ -3344,35 +3343,41 @@ honorItems.forEach(function(item) {
   honorObserver.observe(item);
 });
 
-// ========== 首页大标题：wrapper 360°鼠标跟随 + flipper 悬浮翻转 ==========
+// ========== 首页大标题：wrapper 360°鼠标跟随 + flipper 触碰翻转（完全分离） ==========
 (function() {
   const wrapper = document.getElementById('welcomeWrapper');
   const flipper = document.getElementById('welcomeText');
   if (!wrapper || !flipper) return;
 
+  // ========== 1. 3D鼠标跟随（始终运行，控制wrapper）==========
   let currentAngle = 0;
   let targetAngle = 0;
   let raf = null;
 
-  // 根据鼠标X位置映射到 -180° ~ +180°（360°全周）
   document.addEventListener('mousemove', function(e) {
-    const ratio = e.clientX / window.innerWidth; // 0~1
-    targetAngle = (ratio - 0.5) * 360; // -180 ~ +180
+    const ratio = e.clientX / window.innerWidth;
+    targetAngle = (ratio - 0.5) * 360;
     if (!raf) raf = requestAnimationFrame(tick);
   });
 
   function tick() {
     raf = null;
-    // 平滑插值
     currentAngle += (targetAngle - currentAngle) * 0.06;
-    // 应用到外层wrapper（鼠标跟随360°旋转）
     wrapper.style.transform = 'rotateY(' + currentAngle + 'deg)';
   }
 
-  // 鼠标离开页面时复位
   document.addEventListener('mouseleave', function() {
     targetAngle = 0;
     if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  // ========== 2. 触碰翻转（仅当鼠标进入flipper时触发）==========
+  flipper.addEventListener('mouseenter', function() {
+    flipper.classList.add('is-flipped');
+  });
+
+  flipper.addEventListener('mouseleave', function() {
+    flipper.classList.remove('is-flipped');
   });
 })();
 
