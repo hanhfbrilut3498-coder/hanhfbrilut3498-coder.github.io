@@ -516,28 +516,47 @@ body {
   cursor: pointer;
 }
 
-/* 正面和背面通用样式 - 阴影由JS动态计算 */
+/* 正面和背面通用样式 - 无text-shadow，阴影用独立层 */
 .hero-name-front,
 .hero-name-back {
   display: inline-block;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease, text-shadow 0.1s ease;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
   transform-style: preserve-3d;
-  /* translateZ建立z轴层级：文字在前，阴影在后，避免阴影遮挡文字 */
-  transform: translateZ(2px);
-  /* 默认色块阴影（居中） */
+  position: relative;
+  z-index: 10;
+}
+
+/* 独立阴影层 - 位于文字后方，使用CSS变量控制偏移 */
+.hero-name-front,
+.hero-name-back {
+  --shadow-x: 4px;
+  --shadow-y: 4px;
+}
+
+.hero-name-front::before,
+.hero-name-back::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  color: transparent;
+  pointer-events: none;
+  transition: transform 0.1s ease-out;
+  /* 多层色块阴影，使用CSS变量动态偏移 */
   text-shadow:
-    4px 4px 0 rgba(245,166,35,1),
-    8px 8px 0 rgba(230,120,0,0.8),
-    12px 12px 0 rgba(200,80,0,0.6),
-    16px 16px 0 rgba(150,50,0,0.4),
-    20px 20px 0 rgba(100,30,0,0.2);
+    calc(var(--shadow-x) * 1) calc(var(--shadow-y) * 1) 0 rgba(245,166,35,1),
+    calc(var(--shadow-x) * 2) calc(var(--shadow-y) * 2) 0 rgba(230,120,0,0.85),
+    calc(var(--shadow-x) * 3) calc(var(--shadow-y) * 3) 0 rgba(200,80,0,0.65),
+    calc(var(--shadow-x) * 4) calc(var(--shadow-y) * 4) 0 rgba(150,50,0,0.45),
+    calc(var(--shadow-x) * 5) calc(var(--shadow-y) * 5) 0 rgba(100,30,0,0.25);
 }
 
 /* 正面 - Welcome here（默认可见） */
 .hero-name-front {
-  transform: translateZ(2px) rotateY(0deg);
+  transform: rotateY(0deg);
   opacity: 1;
 }
 
@@ -546,7 +565,7 @@ body {
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translateX(-50%) translateZ(2px) rotateY(180deg);
+  transform: translateX(-50%) rotateY(180deg);
   opacity: 0;
   white-space: nowrap;
   font-family: 'Noto Serif SC', serif;
@@ -556,12 +575,12 @@ body {
 
 /* 触碰翻转类（由JS添加/移除） */
 .hero-name-flipper.is-flipped .hero-name-front {
-  transform: translateZ(2px) rotateY(-180deg);
+  transform: rotateY(-180deg);
   opacity: 0;
 }
 
 .hero-name-flipper.is-flipped .hero-name-back {
-  transform: translateX(-50%) translateZ(2px) rotateY(0deg);
+  transform: translateX(-50%) rotateY(0deg);
   opacity: 1;
 }
 
@@ -2778,10 +2797,10 @@ body {
     <div class="hero-subtitle-top">Film Editor & AI Creator</div>
     <div class="hero-name-wrapper" id="welcomeWrapper">
       <div class="hero-name-flipper" id="welcomeText">
-        <div class="hero-name-front">
+        <div class="hero-name-front" data-text="Welcome here">
           <span class="char">W</span><span class="char">e</span><span class="char">l</span><span class="char">c</span><span class="char">o</span><span class="char">m</span><span class="char">e</span><span class="char">&nbsp;</span><span class="char">h</span><span class="char">e</span><span class="char">r</span><span class="char">e</span>
         </div>
-        <div class="hero-name-back">
+        <div class="hero-name-back" data-text="李嘉豪">
           <span class="char">李</span><span class="char">嘉</span><span class="char">豪</span>
         </div>
       </div>
@@ -3346,7 +3365,7 @@ honorItems.forEach(function(item) {
   honorObserver.observe(item);
 });
 
-// ========== 首页大标题：3D看向 + 动态色块阴影 + 触碰翻转 ==========
+// ========== 首页大标题：3D看向 + 独立阴影层 + 触碰翻转 ==========
 (function() {
   const wrapper = document.getElementById('welcomeWrapper');
   const flipper = document.getElementById('welcomeText');
@@ -3354,14 +3373,16 @@ honorItems.forEach(function(item) {
   const back = flipper ? flipper.querySelector('.hero-name-back') : null;
   if (!wrapper || !flipper || !front || !back) return;
 
-  // ========== 1. 3D看向效果 + 动态色块阴影（始终运行）==========
+  // 获取伪元素阴影层（通过CSS变量或独立元素控制）
+  // 这里用CSS自定义属性控制伪元素的transform
+
   let currentRX = 0, targetRX = 0;
   let currentRY = 0, targetRY = 0;
   let currentShadowX = 4, targetShadowX = 4;
   let currentShadowY = 4, targetShadowY = 4;
   let raf = null;
   const MAX_TILT = 25;
-  const MAX_SHADOW = 24; // 最大阴影偏移
+  const MAX_SHADOW = 24;
 
   function getCenter() {
     const rect = flipper.getBoundingClientRect();
@@ -3369,20 +3390,6 @@ honorItems.forEach(function(item) {
       x: rect.left + rect.width / 2,
       y: rect.top + rect.height / 2
     };
-  }
-
-  // 计算动态色块阴影
-  function buildShadow(sx, sy) {
-    const layers = [
-      { off: 1,  alpha: 1.0, color: '245,166,35' },
-      { off: 2,  alpha: 0.85, color: '230,120,0' },
-      { off: 3,  alpha: 0.65, color: '200,80,0' },
-      { off: 4,  alpha: 0.45, color: '150,50,0' },
-      { off: 5,  alpha: 0.25, color: '100,30,0' }
-    ];
-    return layers.map(function(l) {
-      return (sx * l.off) + 'px ' + (sy * l.off) + 'px 0 rgba(' + l.color + ',' + l.alpha + ')';
-    }).join(', ');
   }
 
   document.addEventListener('mousemove', function(e) {
@@ -3396,7 +3403,7 @@ honorItems.forEach(function(item) {
     targetRY = Math.max(-MAX_TILT, Math.min(MAX_TILT, targetRY));
     targetRX = Math.max(-MAX_TILT, Math.min(MAX_TILT, targetRX));
 
-    // 光源阴影：鼠标在左上方 → 阴影在右下方（相反方向）
+    // 光源阴影偏移（相反方向）
     targetShadowX = -(dx / window.innerWidth) * MAX_SHADOW;
     targetShadowY = -(dy / window.innerHeight) * MAX_SHADOW;
 
@@ -3410,13 +3417,14 @@ honorItems.forEach(function(item) {
     currentShadowX += (targetShadowX - currentShadowX) * 0.12;
     currentShadowY += (targetShadowY - currentShadowY) * 0.12;
 
-    // 应用看向效果
+    // 应用看向效果到wrapper
     wrapper.style.transform = 'rotateX(' + currentRX + 'deg) rotateY(' + currentRY + 'deg)';
 
-    // 应用动态色块阴影
-    var shadow = buildShadow(currentShadowX, currentShadowY);
-    front.style.textShadow = shadow;
-    back.style.textShadow = shadow;
+    // 应用阴影偏移到CSS自定义属性（伪元素使用）
+    front.style.setProperty('--shadow-x', currentShadowX + 'px');
+    front.style.setProperty('--shadow-y', currentShadowY + 'px');
+    back.style.setProperty('--shadow-x', currentShadowX + 'px');
+    back.style.setProperty('--shadow-y', currentShadowY + 'px');
   }
 
   document.addEventListener('mouseleave', function() {
@@ -3425,7 +3433,7 @@ honorItems.forEach(function(item) {
     if (!raf) raf = requestAnimationFrame(tick);
   });
 
-  // ========== 2. 触碰翻转（仅当鼠标进入flipper时触发）==========
+  // 触碰翻转
   flipper.addEventListener('mouseenter', function() {
     flipper.classList.add('is-flipped');
   });
