@@ -516,20 +516,21 @@ body {
   cursor: pointer;
 }
 
-/* 正面和背面通用样式 */
+/* 正面和背面通用样式 - 阴影由JS动态计算 */
 .hero-name-front,
 .hero-name-back {
   display: inline-block;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease, text-shadow 0.1s ease;
   transform-style: preserve-3d;
-  /* 硬边橙色阴影 - 复古印刷叠印效果 */
+  /* 默认色块阴影（居中） */
   text-shadow:
-    3px 3px 0 rgba(245,166,35,0.9),
-    6px 6px 0 rgba(245,140,0,0.7),
-    9px 9px 0 rgba(230,120,0,0.5),
-    12px 12px 0 rgba(200,100,0,0.3);
+    4px 4px 0 rgba(245,166,35,1),
+    8px 8px 0 rgba(230,120,0,0.8),
+    12px 12px 0 rgba(200,80,0,0.6),
+    16px 16px 0 rgba(150,50,0,0.4),
+    20px 20px 0 rgba(100,30,0,0.2);
 }
 
 /* 正面 - Welcome here（默认可见） */
@@ -3343,17 +3344,22 @@ honorItems.forEach(function(item) {
   honorObserver.observe(item);
 });
 
-// ========== 首页大标题：wrapper 3D看向 + flipper 触碰翻转 ==========
+// ========== 首页大标题：3D看向 + 动态色块阴影 + 触碰翻转 ==========
 (function() {
   const wrapper = document.getElementById('welcomeWrapper');
   const flipper = document.getElementById('welcomeText');
-  if (!wrapper || !flipper) return;
+  const front = flipper ? flipper.querySelector('.hero-name-front') : null;
+  const back = flipper ? flipper.querySelector('.hero-name-back') : null;
+  if (!wrapper || !flipper || !front || !back) return;
 
-  // ========== 1. 3D看向效果（始终运行，小角度倾斜，不旋转）==========
+  // ========== 1. 3D看向效果 + 动态色块阴影（始终运行）==========
   let currentRX = 0, targetRX = 0;
   let currentRY = 0, targetRY = 0;
+  let currentShadowX = 4, targetShadowX = 4;
+  let currentShadowY = 4, targetShadowY = 4;
   let raf = null;
-  const MAX_TILT = 25; // 最大倾斜角度
+  const MAX_TILT = 25;
+  const MAX_SHADOW = 24; // 最大阴影偏移
 
   function getCenter() {
     const rect = flipper.getBoundingClientRect();
@@ -3363,18 +3369,34 @@ honorItems.forEach(function(item) {
     };
   }
 
+  // 计算动态色块阴影
+  function buildShadow(sx, sy) {
+    const layers = [
+      { off: 1,  alpha: 1.0, color: '245,166,35' },
+      { off: 2,  alpha: 0.85, color: '230,120,0' },
+      { off: 3,  alpha: 0.65, color: '200,80,0' },
+      { off: 4,  alpha: 0.45, color: '150,50,0' },
+      { off: 5,  alpha: 0.25, color: '100,30,0' }
+    ];
+    return layers.map(function(l) {
+      return (sx * l.off) + 'px ' + (sy * l.off) + 'px 0 rgba(' + l.color + ',' + l.alpha + ')';
+    }).join(', ');
+  }
+
   document.addEventListener('mousemove', function(e) {
     const center = getCenter();
     const dx = e.clientX - center.x;
     const dy = e.clientY - center.y;
 
-    // 计算倾斜角度（小角度，不旋转）
+    // 看向角度
     targetRY = (dx / window.innerWidth) * MAX_TILT * 2;
     targetRX = -(dy / window.innerHeight) * MAX_TILT * 2;
-
-    // 限制范围
     targetRY = Math.max(-MAX_TILT, Math.min(MAX_TILT, targetRY));
     targetRX = Math.max(-MAX_TILT, Math.min(MAX_TILT, targetRX));
+
+    // 光源阴影：鼠标在左上方 → 阴影在右下方（相反方向）
+    targetShadowX = -(dx / window.innerWidth) * MAX_SHADOW;
+    targetShadowY = -(dy / window.innerHeight) * MAX_SHADOW;
 
     if (!raf) raf = requestAnimationFrame(tick);
   });
@@ -3383,13 +3405,21 @@ honorItems.forEach(function(item) {
     raf = null;
     currentRX += (targetRX - currentRX) * 0.08;
     currentRY += (targetRY - currentRY) * 0.08;
-    // 应用到wrapper：小角度倾斜（看向鼠标）
+    currentShadowX += (targetShadowX - currentShadowX) * 0.12;
+    currentShadowY += (targetShadowY - currentShadowY) * 0.12;
+
+    // 应用看向效果
     wrapper.style.transform = 'rotateX(' + currentRX + 'deg) rotateY(' + currentRY + 'deg)';
+
+    // 应用动态色块阴影
+    var shadow = buildShadow(currentShadowX, currentShadowY);
+    front.style.textShadow = shadow;
+    back.style.textShadow = shadow;
   }
 
   document.addEventListener('mouseleave', function() {
-    targetRX = 0;
-    targetRY = 0;
+    targetRX = 0; targetRY = 0;
+    targetShadowX = 4; targetShadowY = 4;
     if (!raf) raf = requestAnimationFrame(tick);
   });
 
