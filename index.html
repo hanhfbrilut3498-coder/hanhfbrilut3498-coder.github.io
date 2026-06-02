@@ -1401,6 +1401,20 @@ body {
   margin-bottom: 1.5rem;
   background: #000;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  pointer-events: auto;
+}
+
+/* 隐藏视频原生下载按钮 */
+.modal-video::-webkit-media-controls-enclosure {
+  overflow: hidden;
+}
+
+.modal-video::-internal-media-controls-download-button {
+  display: none !important;
+}
+
+.modal-video::-webkit-media-controls-panel {
+  overflow: hidden;
 }
 
 .modal-video:hover {
@@ -3569,6 +3583,44 @@ function initDanmaku() {
 
 // 页面加载完成后初始化弹幕
 initDanmaku();
+
+// ========== 资源保护 ==========
+// 禁用右键菜单
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+
+// 禁用拖拽
+document.addEventListener('dragstart', function(e) {
+  e.preventDefault();
+});
+
+// 禁用图片/视频长按保存（移动端）
+document.addEventListener('touchstart', function(e) {
+  if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+    e.target.style.pointerEvents = 'none';
+  }
+}, { passive: true });
+
+// 禁止选中文字
+document.body.style.userSelect = 'none';
+document.body.style.webkitUserSelect = 'none';
+
+// 禁用常见快捷键（F12、Ctrl+S、Ctrl+U、Ctrl+Shift+I）
+document.addEventListener('keydown', function(e) {
+  // F12
+  if (e.key === 'F12') { e.preventDefault(); }
+  // Ctrl+S
+  if (e.ctrlKey && e.key === 's') { e.preventDefault(); }
+  // Ctrl+U（查看源码）
+  if (e.ctrlKey && e.key === 'u') { e.preventDefault(); }
+  // Ctrl+Shift+I（开发者工具）
+  if (e.ctrlKey && e.shiftKey && e.key === 'I') { e.preventDefault(); }
+  // Ctrl+Shift+J（控制台）
+  if (e.ctrlKey && e.shiftKey && e.key === 'J') { e.preventDefault(); }
+  // Ctrl+Shift+C（元素选择）
+  if (e.ctrlKey && e.shiftKey && e.key === 'C') { e.preventDefault(); }
+});
 </script>
 </body>
 </html>
