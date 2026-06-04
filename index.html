@@ -1,8 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>李嘉豪 | 影视后期剪辑师 & AI影视创作探索者</title>
 <!-- Google Fonts - Lilita One (活泼粗体) + 其他字体 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2876,7 +2879,6 @@ body {
 </head>
 <body>
 
-<!-- 页面加载动画 -->
 <div class="page-loader" id="pageLoader">
   <div class="loader-text">
     您好
@@ -2884,10 +2886,8 @@ body {
   </div>
 </div>
 
-<!-- 滚动进度条 -->
 <div class="scroll-progress" id="scrollProgress"></div>
 
-<!-- 章节指示器 -->
 <div class="section-indicator">
   <a href="#hero" data-label="首页" data-section="hero"></a>
   <a href="#about" data-label="关于" data-section="about"></a>
@@ -2899,7 +2899,6 @@ body {
   <a href="#contact" data-label="联系" data-section="contact"></a>
 </div>
 
-<!-- ==================== 导航栏 ==================== -->
 <nav class="navbar" id="navbar">
   <a href="#hero" class="nav-logo" title="回到顶部">
     <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
@@ -2919,9 +2918,7 @@ body {
   </button>
 </nav>
 
-<!-- ==================== Hero 区 ==================== -->
 <section class="hero" id="hero">
-  <!-- 视频背景 -->
   <div class="hero-video-container" id="heroVideoContainer">
     <video class="hero-video" id="heroVideo" autoplay muted loop playsinline>
       <source src="作品/个人AI作品/动物Vlog.mp4" type="video/mp4">
@@ -2930,11 +2927,9 @@ body {
   </div>
   <div class="hero-video-fallback"></div>
 
-  <!-- 粒子画布 -->
   <canvas class="particles-canvas" id="particlesCanvas"></canvas>
 
   <div class="hero-content">
-    <!-- 头像 -->
     <div class="hero-avatar-container">
       <img src="avatar.jpg" alt="李嘉豪" class="hero-avatar" id="heroAvatar" loading="eager" decoding="async">
       <div class="avatar-name-tooltip">李嘉豪</div>
@@ -2965,7 +2960,6 @@ body {
   </div>
 </section>
 
-<!-- ==================== 关于我 ==================== -->
 <section class="section" id="about">
   <div class="section-header reveal">
     <div class="section-number">01 / 关于</div>
@@ -2981,11 +2975,11 @@ body {
       <img src="avatar.jpg" alt="李嘉豪" class="about-avatar" loading="lazy" decoding="async">
       <div class="info-item">
         <span class="info-label">Email</span>
-        <span class="info-value">1845609177@qq.com</span>
+        <span class="info-value">184****@qq.com</span>
       </div>
       <div class="info-item">
         <span class="info-label">Phone</span>
-        <span class="info-value">13066478798</span>
+        <span class="info-value">130****8798</span>
       </div>
       <div class="info-item">
         <span class="info-label">WeChat</span>
@@ -3003,7 +2997,6 @@ body {
   </div>
 </section>
 
-<!-- ==================== 教育背景 ==================== -->
 <section class="section" id="education">
   <div class="section-header reveal">
     <div class="section-number">02 / 教育</div>
@@ -3032,7 +3025,6 @@ body {
   </div>
 </section>
 
-<!-- ==================== 工作经历 ==================== -->
 <section class="section" id="experience">
   <div class="section-header reveal">
     <div class="section-number">03 / 经历</div>
@@ -3062,7 +3054,6 @@ body {
   </div>
 </section>
 
-<!-- ==================== 项目经历 ==================== -->
 <section class="section" id="projects">
   <div class="section-header reveal">
     <div class="section-number">04 / 项目</div>
@@ -3070,7 +3061,6 @@ body {
     <div class="section-divider"></div>
   </div>
   <div class="projects-grid">
-    <!-- 早期项目 -->
     <div class="project-category-card reveal" onclick="openProjectPanel('early')">
       <div class="project-card-header">
         <div class="project-card-number">Category 01</div>
@@ -3079,7 +3069,6 @@ body {
       </div>
       <div class="project-card-icon">&#9733;</div>
     </div>
-    <!-- 工作项目 -->
     <div class="project-category-card reveal" onclick="openProjectPanel('work')">
       <div class="project-card-header">
         <div class="project-card-number">Category 02</div>
@@ -3088,7 +3077,6 @@ body {
       </div>
       <div class="project-card-icon">&#9654;</div>
     </div>
-    <!-- 个人AI项目 -->
     <div class="project-category-card reveal" onclick="openProjectPanel('ai')">
       <div class="project-card-header">
         <div class="project-card-number">Category 03</div>
@@ -3100,7 +3088,6 @@ body {
   </div>
 </section>
 
-<!-- ==================== 荣誉奖项 ==================== -->
 <section class="section" id="honors">
   <div class="section-header reveal">
     <div class="section-number">05 / 荣誉</div>
@@ -3146,7 +3133,6 @@ body {
   </div>
 </section>
 
-<!-- ==================== 技能 ==================== -->
 <section class="section" id="skills">
   <div class="section-header reveal">
     <div class="section-number">06 / 技能</div>
@@ -3198,7 +3184,6 @@ body {
   </div>
 </section>
 
-<!-- ==================== 联系我 ==================== -->
 <section class="section" id="contact">
   <div class="section-header reveal">
     <div class="section-number">07 / 联系</div>
@@ -3211,14 +3196,14 @@ body {
         <div class="contact-icon">&#9993;</div>
         <div>
           <div class="contact-label">Email</div>
-          <div class="contact-value">1845609177@qq.com</div>
+          <div class="contact-value">184****@qq.com</div>
         </div>
       </div>
       <div class="contact-item reveal">
         <div class="contact-icon">&#9742;</div>
         <div>
           <div class="contact-label">Phone</div>
-          <div class="contact-value">13066478798</div>
+          <div class="contact-value">130****8798</div>
         </div>
       </div>
       <div class="contact-item reveal">
@@ -3232,7 +3217,6 @@ body {
   </div>
 </section>
 
-<!-- ==================== 留言板 ==================== -->
 <section class="section guestbook-section" id="guestbook">
   <div class="section-header reveal">
     <div class="section-number">08 / 留言</div>
@@ -3249,12 +3233,10 @@ body {
   </div>
 </section>
 
-<!-- ==================== 页脚 ==================== -->
 <footer class="footer">
   &copy; 2025 李嘉豪. 保留所有权利。
 </footer>
 
-<!-- ==================== 项目浮层（二级页面） ==================== -->
 <div class="project-overlay" id="projectOverlay" onclick="closeProjectPanel(event)">
   <div class="project-panel" id="projectPanel">
     <div class="project-panel-header">
@@ -3265,7 +3247,6 @@ body {
   </div>
 </div>
 
-<!-- ==================== 模态框（三级页面 - 视频详情） ==================== -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal-content" id="modalContent">
     <div class="modal-header">
@@ -3683,11 +3664,10 @@ heroVideo.addEventListener('error', function() {
 // 自动播放失败时，尝试用户交互后播放
 if (heroVideo) {
   heroVideo.play().catch(function(error) {
-    console.log('自动播放被阻止:', error);
-    // 添加点击/触摸事件来启动视频
+    // autoplay blocked - silent
     const startVideo = function() {
       heroVideo.play().catch(function(e) {
-        console.log('播放失败:', e);
+        // play failed - silent
         heroVideoContainer.classList.add('error');
       });
       document.removeEventListener('click', startVideo);
