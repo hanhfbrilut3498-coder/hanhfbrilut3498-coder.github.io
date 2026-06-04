@@ -3661,6 +3661,24 @@ heroVideo.addEventListener('error', function() {
   heroVideoContainer.classList.add('error');
 });
 
+// 页面可见性检测：切换标签页时暂停/恢复视频
+document.addEventListener('visibilitychange', function() {
+  if (!heroVideo) return;
+  if (document.hidden) {
+    heroVideo.pause();
+  } else {
+    heroVideo.play().catch(function() {});
+  }
+});
+
+// 关闭标签页/刷新页面前停止视频
+window.addEventListener('beforeunload', function() {
+  if (heroVideo) {
+    heroVideo.pause();
+    heroVideo.currentTime = 0;
+  }
+});
+
 // 自动播放失败时，尝试用户交互后播放
 if (heroVideo) {
   heroVideo.play().catch(function(error) {
