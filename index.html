@@ -851,7 +851,191 @@ body {
   transform: translateX(0);
 }
 
-/* ========== 关于我 ========== */
+/* ========== 关于我 - 滚动动画舞台 ========== */
+.about-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.about-stage {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 大字背景层 */
+.about-big-text {
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: clamp(8rem, 20vw, 16rem);
+  font-weight: 700;
+  color: var(--fg);
+  opacity: 0;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity, left;
+}
+
+.about-big-text.animate-in {
+  animation: bigTextSlideIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes bigTextSlideIn {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  100% {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.15;
+  }
+}
+
+/* 渐变色块层 */
+.about-gradient-block {
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  transform: translateY(-50%);
+  width: 60%;
+  height: 40%;
+  background: linear-gradient(135deg, rgba(245, 166, 35, 0.3) 0%, rgba(245, 166, 35, 0.1) 50%, rgba(224, 138, 0, 0.2) 100%);
+  border-radius: 30px;
+  filter: blur(60px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  will-change: transform, opacity, left;
+}
+
+.about-gradient-block.animate-in {
+  animation: gradientBlockSlideIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards;
+}
+
+@keyframes gradientBlockSlideIn {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  100% {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+/* 大字变背景动画 */
+.about-big-text.to-background {
+  animation: bigTextToBackground 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.6s forwards;
+}
+
+@keyframes bigTextToBackground {
+  0% {
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.15;
+  }
+  100% {
+    left: 80%;
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.06;
+  }
+}
+
+/* 内容层 */
+.about-content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(60px);
+  will-change: transform, opacity;
+}
+
+.about-content-wrapper.animate-in {
+  animation: contentPopUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.9s forwards;
+}
+
+@keyframes contentPopUp {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 内容元素交错动画 */
+.about-header {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.about-content-wrapper.animate-in .about-header {
+  animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 1.0s forwards;
+}
+
+.about-text {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.about-content-wrapper.animate-in .about-text {
+  animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 1.15s forwards;
+}
+
+.about-info-card {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.about-content-wrapper.animate-in .about-info-card {
+  animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 1.3s forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 动画完成后的稳定状态 */
+.about-section.animation-done .about-big-text {
+  left: 80%;
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0.06;
+}
+
+.about-section.animation-done .about-gradient-block {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.about-section.animation-done .about-content-wrapper,
+.about-section.animation-done .about-header,
+.about-section.animation-done .about-text,
+.about-section.animation-done .about-info-card {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -2558,6 +2742,22 @@ body {
     font-size: 0.9rem;
   }
 
+  /* About动画响应式 */
+  .about-big-text {
+    font-size: clamp(5rem, 15vw, 10rem);
+  }
+
+  .about-gradient-block {
+    width: 80%;
+    height: 30%;
+    filter: blur(40px);
+  }
+
+  .about-section.animation-done .about-big-text {
+    left: 85%;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+
   /* 教育/经历 */
   .edu-header,
   .exp-header {
@@ -3400,38 +3600,48 @@ body {
   </div>
 </section>
 
-<section class="section" id="about">
-  <div class="section-header reveal">
-    <div class="section-number">01 / 关于</div>
-    <h2 class="section-title">About</h2>
-    <div class="section-divider"></div>
-  </div>
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <p>来自四川、现居广佛，毕业于广州华夏职业学院影视多媒体技术专业。拥有从前期摄像到后期特效的全流程经验，擅长信息流剪辑、电商主图视频与IP孵化，对AI影视化流程有深入研究。目前在一线传媒公司担任主剪。</p>
-      <p>我相信技术是创意的延伸——每一帧画面都承载着故事，每一次剪辑都是对时间的重新雕刻。从传统影视制作到AI辅助创作，我始终在探索影像表达的边界。</p>
-    </div>
-    <div class="about-info-card reveal">
-      <img src="avatar.jpg" alt="李嘉豪" class="about-avatar" loading="lazy" decoding="async">
-      <div class="info-item">
-        <span class="info-label">Email</span>
-        <span class="info-value">184****@qq.com</span>
+<section class="section about-section" id="about">
+  <!-- 动画舞台 -->
+  <div class="about-stage">
+    <!-- 大字背景层 -->
+    <div class="about-big-text" aria-hidden="true">ABOUT</div>
+    <!-- 渐变色块层 -->
+    <div class="about-gradient-block" aria-hidden="true"></div>
+    <!-- 内容层 -->
+    <div class="about-content-wrapper">
+      <div class="section-header about-header">
+        <div class="section-number">01 / 关于</div>
+        <h2 class="section-title">About</h2>
+        <div class="section-divider"></div>
       </div>
-      <div class="info-item">
-        <span class="info-label">Phone</span>
-        <span class="info-value">130****8798</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">WeChat</span>
-        <span class="info-value">YeQuee</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Location</span>
-        <span class="info-value">广州 / 佛山</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Age</span>
-        <span class="info-value">23岁</span>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>来自四川、现居广佛，毕业于广州华夏职业学院影视多媒体技术专业。拥有从前期摄像到后期特效的全流程经验，擅长信息流剪辑、电商主图视频与IP孵化，对AI影视化流程有深入研究。目前在一线传媒公司担任主剪。</p>
+          <p>我相信技术是创意的延伸——每一帧画面都承载着故事，每一次剪辑都是对时间的重新雕刻。从传统影视制作到AI辅助创作，我始终在探索影像表达的边界。</p>
+        </div>
+        <div class="about-info-card">
+          <img src="avatar.jpg" alt="李嘉豪" class="about-avatar" loading="lazy" decoding="async">
+          <div class="info-item">
+            <span class="info-label">Email</span>
+            <span class="info-value">184****@qq.com</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Phone</span>
+            <span class="info-value">130****8798</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">WeChat</span>
+            <span class="info-value">YeQuee</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Location</span>
+            <span class="info-value">广州 / 佛山</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Age</span>
+            <span class="info-value">23岁</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -4103,6 +4313,97 @@ const revealObserver = new IntersectionObserver(function(entries) {
 revealElements.forEach(function(el) {
   revealObserver.observe(el);
 });
+
+// ========== About板块滚动动画 ==========
+(function() {
+  const aboutSection = document.getElementById('about');
+  if (!aboutSection) return;
+
+  const bigText = aboutSection.querySelector('.about-big-text');
+  const gradientBlock = aboutSection.querySelector('.about-gradient-block');
+  const contentWrapper = aboutSection.querySelector('.about-content-wrapper');
+
+  let animationTriggered = false;
+  let animationCompleted = false;
+
+  function triggerAboutAnimation() {
+    if (animationTriggered || animationCompleted) return;
+    animationTriggered = true;
+
+    // 阶段1: 大字从左侧划入
+    if (bigText) {
+      bigText.classList.add('animate-in');
+    }
+
+    // 阶段2: 渐变色块跟随划入 (延迟300ms)
+    if (gradientBlock) {
+      setTimeout(function() {
+        gradientBlock.classList.add('animate-in');
+      }, 100);
+    }
+
+    // 阶段3: 大字变背景 (延迟600ms)
+    if (bigText) {
+      setTimeout(function() {
+        bigText.classList.add('to-background');
+      }, 400);
+    }
+
+    // 阶段4: 内容弹出 (延迟900ms)
+    if (contentWrapper) {
+      setTimeout(function() {
+        contentWrapper.classList.add('animate-in');
+      }, 700);
+    }
+
+    // 动画全部完成后添加完成状态类
+    setTimeout(function() {
+      aboutSection.classList.add('animation-done');
+      animationCompleted = true;
+      // 清理动画类，避免后续冲突
+      if (bigText) {
+        bigText.classList.remove('animate-in', 'to-background');
+      }
+      if (gradientBlock) {
+        gradientBlock.classList.remove('animate-in');
+      }
+      if (contentWrapper) {
+        contentWrapper.classList.remove('animate-in');
+      }
+    }, 2500);
+  }
+
+  // 使用 Intersection Observer 检测进入视口
+  const aboutObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+        triggerAboutAnimation();
+        aboutObserver.unobserve(aboutSection);
+      }
+    });
+  }, {
+    threshold: [0.2],
+    rootMargin: '0px 0px -10% 0px'
+  });
+
+  aboutObserver.observe(aboutSection);
+
+  // 备用：如果页面加载时about已经在视口内（如从锚点跳转）
+  function checkAboutInView() {
+    const rect = aboutSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < windowHeight * 0.8 && rect.bottom > 0) {
+      triggerAboutAnimation();
+    }
+  }
+
+  // 页面加载后检查一次
+  if (document.readyState === 'complete') {
+    checkAboutInView();
+  } else {
+    window.addEventListener('load', checkAboutInView);
+  }
+})();
 
 // ========== 荣誉奖项时间线动画 ==========
 const honorYearGroups = document.querySelectorAll('.honor-year-group');
