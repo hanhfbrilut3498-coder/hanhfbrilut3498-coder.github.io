@@ -865,88 +865,97 @@ body {
   justify-content: center;
 }
 
-/* 大字背景层 */
+/* 大字全屏背景层 - 沾满整个section */
 .about-big-text {
   position: absolute;
-  top: 50%;
-  left: -100%;
-  transform: translateY(-50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-display);
-  font-size: clamp(8rem, 20vw, 16rem);
+  font-size: clamp(10rem, 28vw, 22rem);
   font-weight: 700;
   color: var(--fg);
   opacity: 0;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   white-space: nowrap;
   pointer-events: none;
   z-index: 1;
-  will-change: transform, opacity, left;
+  will-change: transform, opacity;
+  transform: translateX(-110%);
+  /* 确保沾满：使用viewport单位撑满 */
+  line-height: 1;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.about-big-text.animate-in {
-  animation: bigTextSlideIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+/* 阶段1: 大字从左侧划入，沾满全屏 */
+.about-big-text.phase-slide-in {
+  animation: bigTextSlideIn 1.0s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes bigTextSlideIn {
   0% {
-    left: -100%;
+    transform: translateX(-110%);
     opacity: 0;
   }
-  100% {
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.15;
-  }
-}
-
-/* 渐变色块层 */
-.about-gradient-block {
-  position: absolute;
-  top: 50%;
-  left: -100%;
-  transform: translateY(-50%);
-  width: 60%;
-  height: 40%;
-  background: linear-gradient(135deg, rgba(245, 166, 35, 0.3) 0%, rgba(245, 166, 35, 0.1) 50%, rgba(224, 138, 0, 0.2) 100%);
-  border-radius: 30px;
-  filter: blur(60px);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 2;
-  will-change: transform, opacity, left;
-}
-
-.about-gradient-block.animate-in {
-  animation: gradientBlockSlideIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards;
-}
-
-@keyframes gradientBlockSlideIn {
-  0% {
-    left: -100%;
-    opacity: 0;
+  30% {
+    opacity: 1;
   }
   100% {
-    left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(0);
     opacity: 1;
   }
 }
 
-/* 大字变背景动画 */
-.about-big-text.to-background {
-  animation: bigTextToBackground 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.6s forwards;
+/* 阶段2: 大字渐隐到背景（约25%不透明度） */
+.about-big-text.phase-fade-bg {
+  animation: bigTextFadeToBg 1.0s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-@keyframes bigTextToBackground {
+@keyframes bigTextFadeToBg {
   0% {
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.15;
+    transform: translateX(0);
+    opacity: 1;
   }
   100% {
-    left: 80%;
-    transform: translate(-50%, -50%) scale(0.6);
-    opacity: 0.06;
+    transform: translateX(0);
+    opacity: 0.25;
+  }
+}
+
+/* 渐变色块层 - 氛围光效 */
+.about-gradient-block {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 50%;
+  background: linear-gradient(135deg, rgba(245, 166, 35, 0.25) 0%, rgba(245, 166, 35, 0.08) 50%, rgba(224, 138, 0, 0.15) 100%);
+  border-radius: 40px;
+  filter: blur(80px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  will-change: opacity;
+}
+
+.about-gradient-block.phase-reveal {
+  animation: gradientReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes gradientReveal {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
@@ -956,57 +965,57 @@ body {
   z-index: 10;
   width: 100%;
   opacity: 0;
-  transform: translateY(60px);
+  transform: translateY(50px) scale(0.97);
   will-change: transform, opacity;
 }
 
-.about-content-wrapper.animate-in {
-  animation: contentPopUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.9s forwards;
+.about-content-wrapper.phase-reveal {
+  animation: contentReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-@keyframes contentPopUp {
+@keyframes contentReveal {
   0% {
     opacity: 0;
-    transform: translateY(60px);
+    transform: translateY(50px) scale(0.97);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 /* 内容元素交错动画 */
 .about-header {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(25px);
 }
 
-.about-content-wrapper.animate-in .about-header {
-  animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 1.0s forwards;
+.about-content-wrapper.phase-reveal .about-header {
+  animation: staggerFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
 }
 
 .about-text {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(25px);
 }
 
-.about-content-wrapper.animate-in .about-text {
-  animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 1.15s forwards;
+.about-content-wrapper.phase-reveal .about-text {
+  animation: staggerFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
 }
 
 .about-info-card {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(25px);
 }
 
-.about-content-wrapper.animate-in .about-info-card {
-  animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 1.3s forwards;
+.about-content-wrapper.phase-reveal .about-info-card {
+  animation: staggerFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
 }
 
-@keyframes fadeInUp {
+@keyframes staggerFadeIn {
   0% {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(25px);
   }
   100% {
     opacity: 1;
@@ -1016,15 +1025,13 @@ body {
 
 /* 动画完成后的稳定状态 */
 .about-section.animation-done .about-big-text {
-  left: 80%;
-  transform: translate(-50%, -50%) scale(0.6);
-  opacity: 0.06;
+  transform: translateX(0);
+  opacity: 0.25;
 }
 
 .about-section.animation-done .about-gradient-block {
-  left: 50%;
-  transform: translate(-50%, -50%);
   opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .about-section.animation-done .about-content-wrapper,
@@ -2744,18 +2751,18 @@ body {
 
   /* About动画响应式 */
   .about-big-text {
-    font-size: clamp(5rem, 15vw, 10rem);
+    font-size: clamp(5rem, 22vw, 14rem);
   }
 
   .about-gradient-block {
-    width: 80%;
-    height: 30%;
-    filter: blur(40px);
+    width: 90%;
+    height: 40%;
+    filter: blur(50px);
   }
 
   .about-section.animation-done .about-big-text {
-    left: 85%;
-    transform: translate(-50%, -50%) scale(0.5);
+    transform: translateX(0);
+    opacity: 0.25;
   }
 
   /* 教育/经历 */
@@ -4316,83 +4323,93 @@ revealElements.forEach(function(el) {
 
 // ========== About板块滚动动画 ==========
 (function() {
-  const aboutSection = document.getElementById('about');
+  var aboutSection = document.getElementById('about');
   if (!aboutSection) return;
 
-  const bigText = aboutSection.querySelector('.about-big-text');
-  const gradientBlock = aboutSection.querySelector('.about-gradient-block');
-  const contentWrapper = aboutSection.querySelector('.about-content-wrapper');
+  var bigText = aboutSection.querySelector('.about-big-text');
+  var gradientBlock = aboutSection.querySelector('.about-gradient-block');
+  var contentWrapper = aboutSection.querySelector('.about-content-wrapper');
 
-  let animationTriggered = false;
-  let animationCompleted = false;
+  var animationTriggered = false;
+  var animationCompleted = false;
+  var phaseTimers = [];
+
+  function clearPhaseTimers() {
+    for (var i = 0; i < phaseTimers.length; i++) {
+      clearTimeout(phaseTimers[i]);
+    }
+    phaseTimers = [];
+  }
 
   function triggerAboutAnimation() {
     if (animationTriggered || animationCompleted) return;
     animationTriggered = true;
 
-    // 阶段1: 大字从左侧划入
+    // 阶段1: 大字从左侧划入，沾满整个section
     if (bigText) {
-      bigText.classList.add('animate-in');
+      bigText.classList.add('phase-slide-in');
     }
 
-    // 阶段2: 渐变色块跟随划入 (延迟300ms)
-    if (gradientBlock) {
-      setTimeout(function() {
-        gradientBlock.classList.add('animate-in');
-      }, 100);
-    }
+    // 阶段2: 大字渐隐到背景（25%不透明度）- 在划入完成后触发
+    var t1 = setTimeout(function() {
+      if (bigText) {
+        bigText.classList.remove('phase-slide-in');
+        bigText.classList.add('phase-fade-bg');
+      }
+      // 同时渐变色块显现
+      if (gradientBlock) {
+        gradientBlock.classList.add('phase-reveal');
+      }
+    }, 1000);
 
-    // 阶段3: 大字变背景 (延迟600ms)
-    if (bigText) {
-      setTimeout(function() {
-        bigText.classList.add('to-background');
-      }, 400);
-    }
-
-    // 阶段4: 内容弹出 (延迟900ms)
-    if (contentWrapper) {
-      setTimeout(function() {
-        contentWrapper.classList.add('animate-in');
-      }, 700);
-    }
+    // 阶段3: 内容弹出 - 在渐隐过程中触发
+    var t2 = setTimeout(function() {
+      if (contentWrapper) {
+        contentWrapper.classList.add('phase-reveal');
+      }
+    }, 1600);
 
     // 动画全部完成后添加完成状态类
-    setTimeout(function() {
+    var t3 = setTimeout(function() {
       aboutSection.classList.add('animation-done');
       animationCompleted = true;
       // 清理动画类，避免后续冲突
       if (bigText) {
-        bigText.classList.remove('animate-in', 'to-background');
+        bigText.classList.remove('phase-slide-in', 'phase-fade-bg');
       }
       if (gradientBlock) {
-        gradientBlock.classList.remove('animate-in');
+        gradientBlock.classList.remove('phase-reveal');
       }
       if (contentWrapper) {
-        contentWrapper.classList.remove('animate-in');
+        contentWrapper.classList.remove('phase-reveal');
       }
-    }, 2500);
+      clearPhaseTimers();
+    }, 3200);
+
+    phaseTimers.push(t1, t2, t3);
   }
 
   // 使用 Intersection Observer 检测进入视口
-  const aboutObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+  var aboutObserver = new IntersectionObserver(function(entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].isIntersecting && entries[i].intersectionRatio >= 0.15) {
         triggerAboutAnimation();
         aboutObserver.unobserve(aboutSection);
+        break;
       }
-    });
+    }
   }, {
-    threshold: [0.2],
-    rootMargin: '0px 0px -10% 0px'
+    threshold: [0.15],
+    rootMargin: '0px 0px -5% 0px'
   });
 
   aboutObserver.observe(aboutSection);
 
   // 备用：如果页面加载时about已经在视口内（如从锚点跳转）
   function checkAboutInView() {
-    const rect = aboutSection.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < windowHeight * 0.8 && rect.bottom > 0) {
+    var rect = aboutSection.getBoundingClientRect();
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < windowHeight * 0.85 && rect.bottom > 0) {
       triggerAboutAnimation();
     }
   }
@@ -4403,6 +4420,9 @@ revealElements.forEach(function(el) {
   } else {
     window.addEventListener('load', checkAboutInView);
   }
+
+  // 页面离开时清理定时器，预防内存泄漏
+  window.addEventListener('beforeunload', clearPhaseTimers);
 })();
 
 // ========== 荣誉奖项时间线动画 ==========
