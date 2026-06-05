@@ -3758,7 +3758,7 @@ body {
       <div class="project-card-content">
         <div class="project-card-meta">
           <span class="project-card-tag">商业实战</span>
-          <span class="project-card-count">8+ 作品</span>
+          <span class="project-card-count">9+ 作品</span>
         </div>
         <h3 class="project-card-title">工作项目</h3>
         <p class="project-card-desc">信息流广告、IP孵化、主图视频等商业项目实战案例</p>
@@ -4188,15 +4188,27 @@ const projectData = {
   },
   // 工作项目 - IP孵化
   work_ximanju_all: {
-    title: '喜满居',
+    title: '喜满居饭店IP',
     portrait: true,
     videos: [
-      '作品/IP/环境宣传片/喜满居环境宣传片脚本.mp4',
-      '作品/IP/荔枝木乳鸽/荔枝木烧鸽.mp4',
-      '作品/IP/药膳乳鸽/药膳鸽过桥鱼.mp4'
+      '作品/IP/喜满居饭店IP/环境宣传片/喜满居环境宣传片脚本.mp4',
+      '作品/IP/喜满居饭店IP/荔枝木乳鸽/荔枝木烧鸽.mp4',
+      '作品/IP/喜满居饭店IP/药膳乳鸽/药膳鸽过桥鱼.mp4'
     ],
     videoLabels: ['喜满居环境宣传片', '荔枝木乳鸽', '药膳乳鸽'],
     content: '<p><strong>项目类型：</strong>IP孵化 / 本地生活</p><p><strong>担任角色：</strong>剪辑 / 设计</p><p><strong>项目描述：</strong>本地餐饮品牌喜满居的IP孵化项目，包含环境宣传片、荔枝木乳鸽、药膳乳鸽等系列内容。</p><p><strong>技术亮点：</strong>环境氛围营造，美食摄影技巧，故事化叙事。</p>'
+  },
+  work_ronghua_all: {
+    title: '荣华彩印视频号IP',
+    portrait: true,
+    videos: [
+      '作品/IP/荣华彩印视频号IP/荣华IP工厂参观长视频.mp4',
+      '作品/IP/荣华彩印视频号IP/荣华口头.mp4',
+      '作品/IP/荣华彩印视频号IP/荣华选题1.mp4',
+      '作品/IP/荣华彩印视频号IP/荣华选题2.mp4'
+    ],
+    videoLabels: ['荣华工厂参观长视频', '荣华口头宣传', '荣华选题1', '荣华选题2'],
+    content: '<p><strong>项目类型：</strong>IP孵化 / 企业视频号</p><p><strong>担任角色：</strong>剪辑 / 后期</p><p><strong>项目描述：</strong>荣华彩印视频号IP孵化项目，包含工厂参观长视频、口头宣传及多支选题内容，助力企业品牌在视频号平台建立内容矩阵。</p><p><strong>技术亮点：</strong>企业形象塑造，内容选题策划，多风格叙事切换，视频号运营思维。</p>'
   },
   // 工作项目 - 主图视频
   work_xiaotiane: {
@@ -4649,21 +4661,34 @@ heroVideo.addEventListener('error', function() {
   heroVideoContainer.classList.add('error');
 });
 
-// 页面可见性检测：切换标签页时暂停/恢复视频
+// 页面可见性检测：切换标签页时暂停所有视频
 document.addEventListener('visibilitychange', function() {
   if (!heroVideo) return;
   if (document.hidden) {
     heroVideo.pause();
+    // 暂停页面上所有其他正在播放的视频
+    var allVideos = document.querySelectorAll('video');
+    for (var i = 0; i < allVideos.length; i++) {
+      if (allVideos[i] !== heroVideo && !allVideos[i].paused) {
+        allVideos[i].pause();
+      }
+    }
   } else {
     heroVideo.play().catch(function() {});
   }
 });
 
-// 关闭标签页/刷新页面前停止视频
+// 关闭标签页/刷新页面前停止所有视频
 window.addEventListener('beforeunload', function() {
   if (heroVideo) {
     heroVideo.pause();
     heroVideo.currentTime = 0;
+  }
+  var allVideos = document.querySelectorAll('video');
+  for (var i = 0; i < allVideos.length; i++) {
+    if (allVideos[i] !== heroVideo) {
+      allVideos[i].pause();
+    }
   }
 });
 
@@ -4716,8 +4741,21 @@ function openProjectPanel(category) {
            buildSubListItem('work_samsung', '三星信息流', '竖屏 · 3支') +
            buildSubListItem('work_mofei', '摩飞', '竖屏 · 3支') +
            '</div></div>';
-    // IP孵化
-    html += buildProjectListItem('work_ximanju_all', '喜满居（IP孵化）', '竖屏视频 · 3支');
+    // IP孵化（可展开子列表）
+    html += '<div class="project-list-item expandable">' +
+            '<div class="expand-header">' +
+            '<div class="project-list-icon">&#9654;</div>' +
+            '<div class="project-list-info">' +
+            '<div class="project-list-item-title">IP孵化</div>' +
+            '<div class="project-list-item-meta">2个品牌 · 竖屏视频</div>' +
+            '</div>' +
+            '<button class="expand-toggle" onclick="event.stopPropagation(); toggleSubList(this)">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>' +
+            '</button></div>' +
+            '<div class="sub-list">' +
+            buildSubListItem('work_ximanju_all', '喜满居饭店IP', '竖屏 · 3支') +
+            buildSubListItem('work_ronghua_all', '荣华彩印视频号IP', '竖屏 · 4支') +
+            '</div></div>';
     // 主图视频（可展开子列表）
     html += '<div class="project-list-item expandable">' +
             '<div class="expand-header">' +
@@ -4851,6 +4889,15 @@ function closeModal(event) {
 function closeModalDirect() {
   const overlay = document.getElementById('modalOverlay');
   overlay.classList.remove('active');
+
+  // 立即暂停模态框内所有正在播放的视频
+  var modalVideos = overlay.querySelectorAll('video');
+  for (var i = 0; i < modalVideos.length; i++) {
+    if (!modalVideos[i].paused) {
+      modalVideos[i].pause();
+    }
+  }
+
   setTimeout(function() {
     overlay.style.display = 'none';
     // 检查项目浮层是否还打开
@@ -4860,6 +4907,19 @@ function closeModalDirect() {
     }
   }, 400);
 }
+
+// ========== 视频播放互斥：同一时间只有一个视频在播放 ==========
+document.addEventListener('play', function(e) {
+  var target = e.target;
+  if (target.tagName !== 'VIDEO') return;
+  // 暂停页面上所有其他正在播放的视频
+  var allVideos = document.querySelectorAll('video');
+  for (var i = 0; i < allVideos.length; i++) {
+    if (allVideos[i] !== target && !allVideos[i].paused) {
+      allVideos[i].pause();
+    }
+  }
+}, true);
 
 // ========== ESC键关闭浮层/模态框 ==========
 document.addEventListener('keydown', function(e) {
