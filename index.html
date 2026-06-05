@@ -1126,7 +1126,7 @@ body {
   background: var(--accent);
 }
 
-/* ========== 项目经历 ========== */
+/* ========== 项目经历 - 一级页面 ========== */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -1138,99 +1138,141 @@ body {
   border: 1px solid var(--border);
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
-  border-radius: 16px;
-  transform-style: preserve-3d;
-  perspective: 1000px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
   will-change: transform, box-shadow;
 }
 
-/* 光泽动画层 */
-.project-category-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+/* 顶部视觉区域 */
+.project-card-visual {
+  position: relative;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(245,166,35,0.08) 0%, rgba(245,166,35,0.02) 100%);
+  overflow: hidden;
+}
+
+.project-card-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--accent);
+  opacity: 0.6;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.project-card-icon svg {
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  transition: left 0.6s ease;
-  pointer-events: none;
 }
 
-.project-category-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 
-    0 25px 60px rgba(44, 36, 32, 0.18),
-    0 10px 20px rgba(44, 36, 32, 0.1);
-  border-color: var(--accent);
-}
-
-.project-category-card:hover::after {
-  left: 100%;
-}
-
-.project-category-card::before {
-  content: '';
+/* 光晕效果 */
+.project-card-glow {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(245,166,35,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
-.project-category-card:hover::before {
-  transform: scaleX(1);
+/* 内容区域 */
+.project-card-content {
+  padding: 1.5rem 2rem 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.project-card-header {
-  padding: 2rem 2rem 1rem;
+.project-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
 }
 
-.project-card-number {
+.project-card-tag {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.3em;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
   color: var(--accent);
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
-}
-
-.project-card-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
-  color: var(--fg);
-  margin-bottom: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid rgba(245,166,35,0.3);
+  border-radius: 20px;
 }
 
 .project-card-count {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--muted);
 }
 
-.project-card-icon {
-  padding: 1rem 2rem 2rem;
-  font-size: 2rem;
+.project-card-content .project-card-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 0.6rem;
+}
+
+.project-card-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+/* 箭头按钮 */
+.project-card-arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   color: var(--accent);
-  opacity: 0.5;
-  transition: all 0.3s ease;
+  letter-spacing: 0.1em;
+  transition: gap 0.3s ease;
+}
+
+.project-card-arrow svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+/* Hover效果 */
+.project-category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 
+    0 20px 50px rgba(44, 36, 32, 0.15),
+    0 8px 16px rgba(44, 36, 32, 0.08);
+  border-color: var(--accent);
 }
 
 .project-category-card:hover .project-card-icon {
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.project-category-card:hover .project-card-glow {
+  opacity: 1;
+}
+
+.project-category-card:hover .project-card-arrow {
+  gap: 0.8rem;
+}
+
+.project-category-card:hover .project-card-arrow svg {
+  transform: translateX(4px);
 }
 
 /* ========== 项目浮层（二级页面） ========== */
@@ -1240,15 +1282,15 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(44, 36, 32, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(44, 36, 32, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 2000;
   display: none;
   justify-content: center;
   align-items: center;
   opacity: 0;
-  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.35s ease;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: opacity;
 }
 
@@ -1260,21 +1302,21 @@ body {
 .project-panel {
   background: var(--bg);
   width: 90%;
-  max-width: 950px;
-  max-height: 88vh;
+  max-width: 900px;
+  max-height: 85vh;
   overflow-y: auto;
-  border-radius: 20px;
-  transform: scale(0.92) translateY(20px);
+  border-radius: 24px;
+  transform: scale(0.9) translateY(30px);
   opacity: 0;
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
   position: relative;
-  box-shadow: 0 25px 80px rgba(44, 36, 32, 0.25);
+  box-shadow: 0 30px 100px rgba(44, 36, 32, 0.3);
   will-change: transform, opacity;
 }
 
 /* 滚动条样式优化 */
 .project-panel::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .project-panel::-webkit-scrollbar-track {
@@ -1283,7 +1325,7 @@ body {
 
 .project-panel::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .project-panel::-webkit-scrollbar-thumb:hover {
@@ -1296,14 +1338,14 @@ body {
 }
 
 .project-panel-header {
-  padding: 1.8rem 2.5rem 1.2rem;
+  padding: 2rem 2.5rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  background: var(--bg);
+  background: rgba(255, 253, 250, 0.95);
   z-index: 1;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -1311,47 +1353,70 @@ body {
 
 .project-panel-title {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  transition: color 0.3s ease;
 }
 
 .project-panel-close {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--border);
   background: var(--card);
   cursor: pointer;
   font-size: 1.4rem;
   color: var(--muted);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .project-panel-close:hover {
   border-color: var(--accent);
   color: var(--accent);
   background: rgba(245, 166, 35, 0.1);
-  transform: rotate(90deg) scale(1.05);
+  transform: rotate(90deg);
 }
 
 .project-panel-body {
   padding: 2rem 2.5rem;
 }
 
+/* 面包屑导航 */
+.panel-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.panel-breadcrumb span {
+  color: var(--accent);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.panel-breadcrumb span:hover {
+  color: var(--fg);
+}
+
 /* 项目列表项 */
 .project-list-item {
-  padding: 1.5rem;
+  padding: 1.5rem 1.8rem;
   border: 1px solid var(--border);
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 14px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
   will-change: transform, background, border-color;
 }
 
@@ -1361,26 +1426,51 @@ body {
   left: 0;
   top: 0;
   height: 100%;
-  width: 3px;
-  background: var(--accent);
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-dark));
   transform: scaleY(0);
-  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 0 2px 2px 0;
 }
 
 .project-list-item:hover {
   border-color: var(--accent);
-  background: rgba(245, 166, 35, 0.05);
-  transform: translateX(6px);
-  box-shadow: 0 4px 15px rgba(44, 36, 32, 0.08);
+  background: rgba(245, 166, 35, 0.04);
+  transform: translateX(8px);
+  box-shadow: 0 6px 20px rgba(44, 36, 32, 0.08);
 }
 
 .project-list-item:hover::before {
   transform: scaleY(1);
 }
 
+/* 列表项图标 */
+.project-list-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(245,166,35,0.1), rgba(245,166,35,0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.project-list-item:hover .project-list-icon {
+  background: linear-gradient(135deg, rgba(245,166,35,0.2), rgba(245,166,35,0.1));
+  transform: scale(1.05);
+}
+
+.project-list-info {
+  flex: 1;
+}
+
 .project-list-item-title {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.3rem;
 }
@@ -1389,35 +1479,117 @@ body {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--muted);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
 }
 
-/* 三级子列表 */
+.project-list-arrow {
+  color: var(--muted);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.project-list-item:hover .project-list-arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--accent);
+}
+
+/* 可展开列表 */
+.project-list-item.expandable {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.project-list-item.expandable .expand-header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.expand-toggle {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: auto;
+}
+
+.expand-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.expand-toggle svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+
+.expand-toggle.expanded svg {
+  transform: rotate(180deg);
+}
+
+/* 子列表 */
 .sub-list {
   margin-top: 1rem;
-  padding-left: 1rem;
-  border-left: 2px solid var(--border);
-  transition: border-color 0.3s ease;
+  padding-left: 3.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.sub-list.expanded {
+  max-height: 500px;
+  opacity: 1;
 }
 
 .sub-list-item {
-  padding: 1rem;
+  padding: 0.9rem 1.2rem;
   margin-bottom: 0.5rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   will-change: background, transform;
 }
 
 .sub-list-item:hover {
-  background: rgba(245, 166, 35, 0.08);
+  background: rgba(245, 166, 35, 0.06);
+  border-color: var(--border);
   transform: translateX(4px);
 }
 
+.sub-list-item-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.sub-list-item:hover .sub-list-item-dot {
+  opacity: 1;
+}
+
 .sub-list-item-title {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  margin-bottom: 0.2rem;
+  flex: 1;
 }
 
 .sub-list-item-meta {
@@ -3066,31 +3238,85 @@ body {
     <div class="section-number">04 / 项目</div>
     <h2 class="section-title">Projects</h2>
     <div class="section-divider"></div>
+    <p class="section-subtitle">探索我的作品世界，从早期创作到AI探索</p>
   </div>
   <div class="projects-grid">
-    <div class="project-category-card reveal" onclick="openProjectPanel('early')">
-      <div class="project-card-header">
-        <div class="project-card-number">Category 01</div>
-        <div class="project-card-title">早期项目</div>
-        <div class="project-card-count">4 个作品</div>
+    <div class="project-category-card reveal" data-category="early" onclick="openProjectPanel('early')">
+      <div class="project-card-visual">
+        <div class="project-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <div class="project-card-glow"></div>
       </div>
-      <div class="project-card-icon">&#9733;</div>
+      <div class="project-card-content">
+        <div class="project-card-meta">
+          <span class="project-card-tag">学生时代</span>
+          <span class="project-card-count">4 作品</span>
+        </div>
+        <h3 class="project-card-title">早期项目</h3>
+        <p class="project-card-desc">学院奖、大广赛等比赛获奖作品，展现创意与技术的融合</p>
+        <div class="project-card-arrow">
+          <span>查看作品</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </div>
     </div>
-    <div class="project-category-card reveal" onclick="openProjectPanel('work')">
-      <div class="project-card-header">
-        <div class="project-card-number">Category 02</div>
-        <div class="project-card-title">工作项目</div>
-        <div class="project-card-count">3 个分类 · 多个作品</div>
+    <div class="project-category-card reveal" data-category="work" onclick="openProjectPanel('work')">
+      <div class="project-card-visual">
+        <div class="project-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <div class="project-card-glow"></div>
       </div>
-      <div class="project-card-icon">&#9654;</div>
+      <div class="project-card-content">
+        <div class="project-card-meta">
+          <span class="project-card-tag">商业实战</span>
+          <span class="project-card-count">8+ 作品</span>
+        </div>
+        <h3 class="project-card-title">工作项目</h3>
+        <p class="project-card-desc">信息流广告、IP孵化、主图视频等商业项目实战案例</p>
+        <div class="project-card-arrow">
+          <span>查看作品</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </div>
     </div>
-    <div class="project-category-card reveal" onclick="openProjectPanel('ai')">
-      <div class="project-card-header">
-        <div class="project-card-number">Category 03</div>
-        <div class="project-card-title">个人AI项目</div>
-        <div class="project-card-count">4 个作品</div>
+    <div class="project-category-card reveal" data-category="ai" onclick="openProjectPanel('ai')">
+      <div class="project-card-visual">
+        <div class="project-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="project-card-glow"></div>
       </div>
-      <div class="project-card-icon">&#10024;</div>
+      <div class="project-card-content">
+        <div class="project-card-meta">
+          <span class="project-card-tag">AI探索</span>
+          <span class="project-card-count">4 作品</span>
+        </div>
+        <h3 class="project-card-title">个人AI项目</h3>
+        <p class="project-card-desc">AI影视化流程探索，从提示词工程到完整作品输出</p>
+        <div class="project-card-arrow">
+          <span>查看作品</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -3744,10 +3970,17 @@ function openProjectPanel(category) {
   } else if (category === 'work') {
     title.textContent = '工作项目';
     // 创意信息流（可展开子列表）
-    html = '<div class="project-list-item" onclick="event.stopPropagation(); toggleSubList(this)">' +
+    html = '<div class="project-list-item expandable">' +
+           '<div class="expand-header">' +
+           '<div class="project-list-icon">&#9654;</div>' +
+           '<div class="project-list-info">' +
            '<div class="project-list-item-title">创意信息流</div>' +
            '<div class="project-list-item-meta">3个品牌 · 竖屏视频</div>' +
-           '<div class="sub-list" style="display:none">' +
+           '</div>' +
+           '<button class="expand-toggle" onclick="event.stopPropagation(); toggleSubList(this)">' +
+           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>' +
+           '</button></div>' +
+           '<div class="sub-list">' +
            buildSubListItem('work_jinweita', '金维他', '竖屏 · 3支') +
            buildSubListItem('work_samsung', '三星信息流', '竖屏 · 3支') +
            buildSubListItem('work_mofei', '摩飞', '竖屏 · 3支') +
@@ -3755,10 +3988,17 @@ function openProjectPanel(category) {
     // IP孵化
     html += buildProjectListItem('work_ximanju_all', '喜满居（IP孵化）', '竖屏视频 · 3支');
     // 主图视频（可展开子列表）
-    html += '<div class="project-list-item" onclick="event.stopPropagation(); toggleSubList(this)">' +
+    html += '<div class="project-list-item expandable">' +
+            '<div class="expand-header">' +
+            '<div class="project-list-icon">&#9654;</div>' +
+            '<div class="project-list-info">' +
             '<div class="project-list-item-title">主图视频</div>' +
             '<div class="project-list-item-meta">2个产品 · 横屏视频</div>' +
-            '<div class="sub-list" style="display:none">' +
+            '</div>' +
+            '<button class="expand-toggle" onclick="event.stopPropagation(); toggleSubList(this)">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>' +
+            '</button></div>' +
+            '<div class="sub-list">' +
             buildSubListItem('work_xiaotiane', '小天鹅滚筒', '横屏视频') +
             buildSubListItem('work_dianreitan', '电热毯', '横屏视频') +
             '</div></div>';
@@ -3783,22 +4023,29 @@ function openProjectPanel(category) {
 
 function buildProjectListItem(key, title, meta) {
   return '<div class="project-list-item" onclick="event.stopPropagation(); openModal(\'' + key + '\')">' +
+         '<div class="project-list-icon">&#9654;</div>' +
+         '<div class="project-list-info">' +
          '<div class="project-list-item-title">' + title + '</div>' +
          '<div class="project-list-item-meta">' + meta + '</div>' +
+         '</div>' +
+         '<div class="project-list-arrow">&#8594;</div>' +
          '</div>';
 }
 
 function buildSubListItem(key, title, meta) {
   return '<div class="sub-list-item" onclick="event.stopPropagation(); openModal(\'' + key + '\')">' +
+         '<div class="sub-list-item-dot"></div>' +
          '<div class="sub-list-item-title">' + title + '</div>' +
          '<div class="sub-list-item-meta">' + meta + '</div>' +
          '</div>';
 }
 
-function toggleSubList(item) {
+function toggleSubList(btn) {
+  const item = btn.closest('.project-list-item.expandable');
   const subList = item.querySelector('.sub-list');
   if (subList) {
-    subList.style.display = subList.style.display === 'none' ? 'block' : 'none';
+    subList.classList.toggle('expanded');
+    btn.classList.toggle('expanded');
   }
 }
 
