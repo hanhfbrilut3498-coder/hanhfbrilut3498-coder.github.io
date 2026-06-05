@@ -1749,61 +1749,245 @@ body {
   color: var(--accent);
 }
 
-/* ========== 荣誉奖项 ========== */
-.honors-list {
-  display: grid;
-  gap: 0;
-}
-
-.honor-item {
+/* ========== 荣誉奖项 - 时间线布局 ========== */
+.honors-timeline {
   display: flex;
-  align-items: center;
-  gap: 2rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--border);
-  transition: all 0.3s ease;
+  flex-direction: column;
+  gap: 3rem;
+  position: relative;
+}
+
+/* 年份分组 */
+.honor-year-group {
+  display: flex;
+  gap: 2.5rem;
   opacity: 0;
-  transform: translateX(-20px);
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.honor-item.visible {
+.honor-year-group.visible {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
-.honor-item:hover {
-  padding-left: 1rem;
+/* 年份徽章 */
+.honor-year-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  position: relative;
 }
 
-.honor-year {
+.honor-year-number {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
   color: var(--accent);
-  min-width: 50px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  background: var(--bg);
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.honor-name {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
+.honor-year-group:hover .honor-year-number {
+  background: var(--accent);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.honor-year-line {
+  width: 2px;
+  flex: 1;
+  min-height: 60px;
+  background: linear-gradient(to bottom, var(--accent) 0%, var(--border) 100%);
+  border-radius: 1px;
+  position: relative;
+}
+
+.honor-year-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.4s ease;
+}
+
+.honor-year-group:hover .honor-year-line::after {
+  background: var(--accent);
+  transform: translateX(-50%) scale(1.3);
+}
+
+/* 卡片网格 */
+.honor-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
   flex: 1;
 }
 
-.honor-level {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  padding: 0.3rem 0.8rem;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  white-space: nowrap;
-  border-radius: 12px;
+/* 荣誉卡片 - 3D翻转 */
+.honor-card {
+  perspective: 1000px;
+  height: 140px;
+  cursor: pointer;
 }
 
-.honor-item:hover .honor-level {
-  border-color: var(--accent);
-  color: var(--accent);
+.honor-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+
+.honor-card:hover .honor-card-inner {
+  transform: rotateY(180deg);
+}
+
+.honor-card-front,
+.honor-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.honor-card-front {
+  background: var(--card);
+}
+
+/* 等级色带装饰 */
+.honor-card-front::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  transition: all 0.4s ease;
+}
+
+.honor-card[data-level="1"] .honor-card-front::before { background: linear-gradient(to bottom, #FFD700, #FFA500); }
+.honor-card[data-level="2"] .honor-card-front::before { background: linear-gradient(to bottom, #C0C0C0, #A0A0A0); }
+.honor-card[data-level="3"] .honor-card-front::before { background: linear-gradient(to bottom, #CD7F32, #B87333); }
+.honor-card[data-level="4"] .honor-card-front::before { background: linear-gradient(to bottom, var(--accent), var(--accent-dark)); }
+
+/* 图标 */
+.honor-card-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  flex-shrink: 0;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.honor-card[data-level="1"] .honor-card-icon { background: rgba(255, 215, 0, 0.12); color: #D4A017; }
+.honor-card[data-level="2"] .honor-card-icon { background: rgba(192, 192, 192, 0.15); color: #909090; }
+.honor-card[data-level="3"] .honor-card-icon { background: rgba(205, 127, 50, 0.12); color: #B87333; }
+.honor-card[data-level="4"] .honor-card-icon { background: rgba(245, 166, 35, 0.1); color: var(--accent); }
+
+.honor-card:hover .honor-card-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.honor-card-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* 卡片内容 */
+.honor-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.honor-card-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.honor-card-level {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.7rem;
+  border-radius: 10px;
+  display: inline-block;
+  transition: all 0.4s ease;
+}
+
+.honor-card[data-level="1"] .honor-card-level { background: rgba(255, 215, 0, 0.12); color: #B8860B; }
+.honor-card[data-level="2"] .honor-card-level { background: rgba(192, 192, 192, 0.15); color: #707070; }
+.honor-card[data-level="3"] .honor-card-level { background: rgba(205, 127, 50, 0.12); color: #A0522D; }
+.honor-card[data-level="4"] .honor-card-level { background: rgba(245, 166, 35, 0.1); color: var(--accent-dark); }
+
+/* 背面 */
+.honor-card-back {
+  background: var(--dark);
+  color: var(--bg);
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.2rem;
+}
+
+.honor-card-desc {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(249, 246, 240, 0.85);
+  font-family: var(--font-body);
+}
+
+/* 光晕效果 */
+.honor-card-front::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.honor-card[data-level="1"] .honor-card-front::after { background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 70%); }
+.honor-card[data-level="2"] .honor-card-front::after { background: radial-gradient(circle, rgba(192, 192, 192, 0.06) 0%, transparent 70%); }
+.honor-card[data-level="3"] .honor-card-front::after { background: radial-gradient(circle, rgba(205, 127, 50, 0.06) 0%, transparent 70%); }
+.honor-card[data-level="4"] .honor-card-front::after { background: radial-gradient(circle, rgba(245, 166, 35, 0.06) 0%, transparent 70%); }
+
+.honor-card:hover .honor-card-front::after {
+  opacity: 1;
 }
 
 /* ========== 技能 ========== */
@@ -2485,24 +2669,46 @@ body {
     border-radius: 10px;
   }
 
-  /* 荣誉 */
-  .honors-list {
-    gap: 0;
+  /* 荣誉时间线 */
+  .honor-year-group {
+    flex-direction: column;
+    gap: 1.2rem;
   }
 
-  .honor-item {
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    padding: 1.2rem 0;
+  .honor-year-badge {
+    flex-direction: row;
+    gap: 1rem;
   }
 
-  .honor-year {
-    font-size: 0.75rem;
-    min-width: 50px;
+  .honor-year-line {
+    width: 40px;
+    height: 2px;
+    min-height: auto;
+    background: linear-gradient(to right, var(--accent) 0%, var(--border) 100%);
   }
 
-  .honor-name {
-    font-size: 0.88rem;
+  .honor-year-line::after {
+    right: 0;
+    top: 50%;
+    left: auto;
+    transform: translateY(-50%);
+  }
+
+  .honor-year-group:hover .honor-year-line::after {
+    transform: translateY(-50%) scale(1.3);
+  }
+
+  .honor-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .honor-card {
+    height: 120px;
+  }
+
+  .honor-card-title {
+    font-size: 0.95rem;
   }
 
   /* 技能 */
@@ -2721,16 +2927,51 @@ body {
     padding: 0.8rem 1.8rem;
   }
 
-  /* 荣誉列表 */
-  .honors-list {
-    gap: 0.6rem;
+  /* 荣誉时间线 */
+  .honor-year-group {
+    gap: 1rem;
   }
 
-  .honor-item {
-    padding: 0.8rem 1rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3rem;
+  .honor-year-number {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .honor-cards {
+    gap: 0.8rem;
+  }
+
+  .honor-card {
+    height: 110px;
+  }
+
+  .honor-card-front,
+  .honor-card-back {
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+
+  .honor-card-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .honor-card-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .honor-card-title {
+    font-size: 0.85rem;
+  }
+
+  .honor-card-level {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .honor-card-desc {
+    font-size: 0.78rem;
   }
 
   .honor-year {
@@ -2810,8 +3051,27 @@ body {
   }
 
   /* 荣誉 */
-  .honor-item {
-    padding: 0.6rem 0.8rem;
+  .honor-year-group {
+    gap: 0.8rem;
+  }
+
+  .honor-card {
+    height: 100px;
+  }
+
+  .honor-card-front,
+  .honor-card-back {
+    padding: 0.8rem;
+    gap: 0.6rem;
+  }
+
+  .honor-card-title {
+    font-size: 0.8rem;
+  }
+
+  .honor-card-desc {
+    font-size: 0.72rem;
+    line-height: 1.5;
   }
 
   .honor-year {
@@ -3327,41 +3587,153 @@ body {
     <h2 class="section-title">Honors</h2>
     <div class="section-divider"></div>
   </div>
-  <div class="honors-list">
-    <div class="honor-item">
-      <span class="honor-year">2023</span>
-      <span class="honor-name">学院奖 — 焕新活力每一刻</span>
-      <span class="honor-level">优秀类</span>
+  <div class="honors-timeline">
+    <!-- 2023年奖项组 -->
+    <div class="honor-year-group reveal">
+      <div class="honor-year-badge">
+        <span class="honor-year-number">2023</span>
+        <div class="honor-year-line"></div>
+      </div>
+      <div class="honor-cards">
+        <div class="honor-card" data-level="1">
+          <div class="honor-card-inner">
+            <div class="honor-card-front">
+              <div class="honor-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+              <div class="honor-card-content">
+                <h4 class="honor-card-title">国青杯 — 梦·非梦</h4>
+                <span class="honor-card-level">一等奖</span>
+              </div>
+            </div>
+            <div class="honor-card-back">
+              <p class="honor-card-desc">国家级青年创意大赛最高荣誉，作品《梦·非梦》以独特的叙事手法和视觉呈现获得评委一致认可。</p>
+            </div>
+          </div>
+        </div>
+        <div class="honor-card" data-level="2">
+          <div class="honor-card-inner">
+            <div class="honor-card-front">
+              <div class="honor-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+              <div class="honor-card-content">
+                <h4 class="honor-card-title">大广赛广东省赛 — 绽放人生之美</h4>
+                <span class="honor-card-level">二等奖</span>
+              </div>
+            </div>
+            <div class="honor-card-back">
+              <p class="honor-card-desc">广东省大学生广告艺术大赛，作品以细腻的情感表达和精美的视觉设计脱颖而出。</p>
+            </div>
+          </div>
+        </div>
+        <div class="honor-card" data-level="3">
+          <div class="honor-card-inner">
+            <div class="honor-card-front">
+              <div class="honor-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+              <div class="honor-card-content">
+                <h4 class="honor-card-title">大广赛广东省赛 — 别担心太多</h4>
+                <span class="honor-card-level">三等奖</span>
+              </div>
+            </div>
+            <div class="honor-card-back">
+              <p class="honor-card-desc">同一赛事另一作品，以温暖的视角探讨当代年轻人的焦虑与自我和解。</p>
+            </div>
+          </div>
+        </div>
+        <div class="honor-card" data-level="3">
+          <div class="honor-card-inner">
+            <div class="honor-card-front">
+              <div class="honor-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="8" r="6"/>
+                  <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                </svg>
+              </div>
+              <div class="honor-card-content">
+                <h4 class="honor-card-title">蓝桥杯 — 梦·非梦</h4>
+                <span class="honor-card-level">三等奖</span>
+              </div>
+            </div>
+            <div class="honor-card-back">
+              <p class="honor-card-desc">全国蓝桥杯视觉艺术设计赛，展现了扎实的技术功底和创意思维。</p>
+            </div>
+          </div>
+        </div>
+        <div class="honor-card" data-level="4">
+          <div class="honor-card-inner">
+            <div class="honor-card-front">
+              <div class="honor-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="8" r="6"/>
+                  <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                </svg>
+              </div>
+              <div class="honor-card-content">
+                <h4 class="honor-card-title">学院奖 — 焕新活力每一刻</h4>
+                <span class="honor-card-level">优秀类</span>
+              </div>
+            </div>
+            <div class="honor-card-back">
+              <p class="honor-card-desc">中国大学生广告艺术节学院奖，作品获得品牌方和评委的高度评价。</p>
+            </div>
+          </div>
+        </div>
+        <div class="honor-card" data-level="4">
+          <div class="honor-card-inner">
+            <div class="honor-card-front">
+              <div class="honor-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="8" r="6"/>
+                  <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                </svg>
+              </div>
+              <div class="honor-card-content">
+                <h4 class="honor-card-title">大广赛 — 别担心太多</h4>
+                <span class="honor-card-level">优秀奖</span>
+              </div>
+            </div>
+            <div class="honor-card-back">
+              <p class="honor-card-desc">全国大学生广告艺术大赛，作品以真挚的情感打动人心。</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="honor-item">
-      <span class="honor-year">2023</span>
-      <span class="honor-name">大广赛 — 别担心太多</span>
-      <span class="honor-level">优秀奖</span>
-    </div>
-    <div class="honor-item">
-      <span class="honor-year">2023</span>
-      <span class="honor-name">大广赛广东省赛 — 别担心太多</span>
-      <span class="honor-level">三等奖</span>
-    </div>
-    <div class="honor-item">
-      <span class="honor-year">2023</span>
-      <span class="honor-name">大广赛广东省赛 — 绽放人生之美</span>
-      <span class="honor-level">二等奖</span>
-    </div>
-    <div class="honor-item">
-      <span class="honor-year">2023</span>
-      <span class="honor-name">蓝桥杯 — 梦·非梦</span>
-      <span class="honor-level">三等奖</span>
-    </div>
-    <div class="honor-item">
-      <span class="honor-year">2023</span>
-      <span class="honor-name">国青杯 — 梦·非梦</span>
-      <span class="honor-level">一等奖</span>
-    </div>
-    <div class="honor-item">
-      <span class="honor-year">2022</span>
-      <span class="honor-name">微电影 — 搬砖</span>
-      <span class="honor-level">优秀奖</span>
+    <!-- 2022年奖项组 -->
+    <div class="honor-year-group reveal">
+      <div class="honor-year-badge">
+        <span class="honor-year-number">2022</span>
+        <div class="honor-year-line"></div>
+      </div>
+      <div class="honor-cards">
+        <div class="honor-card" data-level="4">
+          <div class="honor-card-inner">
+            <div class="honor-card-front">
+              <div class="honor-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+              <div class="honor-card-content">
+                <h4 class="honor-card-title">微电影 — 搬砖</h4>
+                <span class="honor-card-level">优秀奖</span>
+              </div>
+            </div>
+            <div class="honor-card-back">
+              <p class="honor-card-desc">微电影创作大赛，以纪实手法记录普通劳动者的生活，传递温暖与力量。</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -3732,21 +4104,58 @@ revealElements.forEach(function(el) {
 });
 
 // ========== 荣誉奖项时间线动画 ==========
-const honorItems = document.querySelectorAll('.honor-item');
-const honorObserver = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry, index) {
+const honorYearGroups = document.querySelectorAll('.honor-year-group');
+const honorCards = document.querySelectorAll('.honor-card');
+
+// 年份组入场动画
+const honorGroupObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
     if (entry.isIntersecting) {
-      setTimeout(function() {
-        entry.target.classList.add('visible');
-      }, index * 100);
+      entry.target.classList.add('visible');
+      // 组内卡片交错动画
+      const cards = entry.target.querySelectorAll('.honor-card');
+      cards.forEach(function(card, index) {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(function() {
+          card.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 200 + index * 80);
+      });
     }
   });
 }, {
-  threshold: 0.1
+  threshold: 0.15
 });
 
-honorItems.forEach(function(item) {
-  honorObserver.observe(item);
+honorYearGroups.forEach(function(group) {
+  honorGroupObserver.observe(group);
+});
+
+// 卡片3D倾斜效果（鼠标跟随）
+honorCards.forEach(function(card) {
+  card.addEventListener('mousemove', function(e) {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
+    
+    const inner = card.querySelector('.honor-card-inner');
+    if (inner && !inner.style.transform.includes('rotateY(180deg)')) {
+      inner.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+    }
+  });
+
+  card.addEventListener('mouseleave', function() {
+    const inner = card.querySelector('.honor-card-inner');
+    if (inner) {
+      inner.style.transform = '';
+    }
+  });
 });
 
 // ========== 首页大标题：3D看向 + 独立阴影层 + 触碰翻转 ==========
