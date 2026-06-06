@@ -25,18 +25,24 @@
 <style>
 /* ========== CSS 变量 & 基础重置 ========== */
 :root {
-  --bg: #F9F6F0;
-  --bg-sand: #F0EBE3;
-  --fg: #3A3A3E;
-  --accent: #F5A623;
-  --accent-dark: #E08A00;
-  --muted: #8B7D6B;
-  --card: #F5F0E8;
-  --border: #E0D8CC;
-  --dark: #2C2C30;
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
-  --font-body: 'Noto Serif SC', 'Georgia', serif;
-  --font-mono: 'DM Mono', 'Courier New', monospace;
+  /* Pentagram 信息架构色系 */
+  --bg: #F4F1E7;
+  --bg-sand: #E8E3D6;
+  --fg: #111111;
+  --fg-dim: #333333;
+  --accent: #B83A1F;
+  --accent-dark: #8C2B14;
+  --muted: #6B6358;
+  --card: #ECE8DE;
+  --border: #C4BFB2;
+  --border-light: #D6D1C6;
+  --dark: #111111;
+  --ink: #111111;
+  --ground: #F4F1E7;
+  /* Pentagram 排版系统 — 无衬线主导 */
+  --font-display: 'Helvetica Neue', 'Helvetica', 'Arial', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-body: 'Helvetica Neue', 'Helvetica', 'Arial', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace;
 }
 
 *, *::before, *::after {
@@ -851,300 +857,126 @@ body {
   transform: translateX(0);
 }
 
-/* ========== 关于我 - 滚动动画舞台 ========== */
+/* ========== 关于我 — Pentagram 直排版式 ========== */
 .about-section {
   position: relative;
-  overflow: hidden;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background: var(--bg);
 }
 
-.about-stage {
-  position: relative;
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 大字全屏背景层 - 沾满整个section */
-.about-big-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: clamp(10rem, 28vw, 22rem);
-  font-weight: 700;
-  color: var(--fg);
-  opacity: 0;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 1;
-  will-change: transform, opacity;
-  transform: translateX(-110%);
-  /* 确保沾满：使用viewport单位撑满 */
-  line-height: 1;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* 阶段1: 大字从左侧划入，沾满全屏 */
-.about-big-text.phase-slide-in {
-  animation: bigTextSlideIn 1.0s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes bigTextSlideIn {
-  0% {
-    transform: translateX(-110%);
-    opacity: 0;
-  }
-  30% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* 阶段2: 大字渐隐到背景（约25%不透明度） */
-.about-big-text.phase-fade-bg {
-  animation: bigTextFadeToBg 1.0s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes bigTextFadeToBg {
-  0% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 0.25;
-  }
-}
-
-/* 渐变色块层 - 氛围光效 */
-.about-gradient-block {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70%;
-  height: 50%;
-  background: linear-gradient(135deg, rgba(245, 166, 35, 0.25) 0%, rgba(245, 166, 35, 0.08) 50%, rgba(224, 138, 0, 0.15) 100%);
-  border-radius: 40px;
-  filter: blur(80px);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 2;
-  will-change: opacity;
-}
-
-.about-gradient-block.phase-reveal {
-  animation: gradientReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes gradientReveal {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-/* 内容层 */
-.about-content-wrapper {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  opacity: 0;
-  transform: translateY(50px) scale(0.97);
-  will-change: transform, opacity;
-}
-
-.about-content-wrapper.phase-reveal {
-  animation: contentReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes contentReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(50px) scale(0.97);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* 内容元素交错动画 */
-.about-header {
-  opacity: 0;
-  transform: translateY(25px);
-}
-
-.about-content-wrapper.phase-reveal .about-header {
-  animation: staggerFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
-}
-
-.about-text {
-  opacity: 0;
-  transform: translateY(25px);
-}
-
-.about-content-wrapper.phase-reveal .about-text {
-  animation: staggerFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
-}
-
-.about-info-card {
-  opacity: 0;
-  transform: translateY(25px);
-}
-
-.about-content-wrapper.phase-reveal .about-info-card {
-  animation: staggerFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
-}
-
-@keyframes staggerFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 动画完成后的稳定状态 */
-.about-section.animation-done .about-big-text {
-  transform: translateX(0);
-  opacity: 0.25;
-}
-
-.about-section.animation-done .about-gradient-block {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.about-section.animation-done .about-content-wrapper,
-.about-section.animation-done .about-header,
-.about-section.animation-done .about-text,
-.about-section.animation-done .about-info-card {
-  opacity: 1;
-  transform: none;
-  animation: none;
-}
-
-.about-grid {
+.about-block {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 4rem;
-  align-items: start;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 28px;
 }
 
-.about-text p {
-  font-size: 1.05rem;
-  line-height: 2;
-  color: var(--fg);
-  margin-bottom: 1.5rem;
+/* 编号色块 */
+.about-index {
+  grid-column: 1 / 2;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--ground);
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  text-transform: uppercase;
 }
 
-.about-text p:first-of-type::first-letter {
+/* 大字标题 — 图形化 */
+.about-headline {
+  grid-column: 2 / 8;
   font-family: var(--font-display);
-  font-size: 3.5rem;
-  float: left;
-  line-height: 1;
-  margin-right: 0.5rem;
-  margin-top: 0.1rem;
-  color: var(--accent);
-  font-weight: 600;
+  font-size: clamp(5rem, 10vw, 8rem);
+  font-weight: 700;
+  line-height: 0.85;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
 }
 
-.about-info-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 2.5rem;
-  position: relative;
-  border-radius: 16px;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  overflow: hidden;
-  will-change: transform, box-shadow;
+/* 正文 */
+.about-body {
+  grid-column: 2 / 8;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--fg-dim);
+  margin-bottom: 3rem;
+  max-width: 560px;
 }
 
-.about-info-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(245, 166, 35, 0.05),
-    transparent
-  );
-  transition: left 0.6s ease;
-  pointer-events: none;
+.about-body p {
+  margin-bottom: 1.2rem;
 }
 
-.about-info-card:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 20px 50px rgba(44, 36, 32, 0.12);
-}
-
-.about-info-card:hover::after {
-  left: 100%;
-}
-
-.about-info-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--accent);
-  border-radius: 16px 0 0 16px;
+/* 个人信息 — 右侧网格 */
+.about-info {
+  grid-column: 9 / 13;
+  padding-top: 1rem;
 }
 
 .about-avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+  width: 160px;
+  height: 160px;
   object-fit: cover;
-  border: 3px solid var(--accent);
-  margin-bottom: 1.5rem;
+  filter: grayscale(100%);
+  margin-bottom: 2rem;
+  display: block;
 }
 
-.info-item {
+.about-info-list {
+  list-style: none;
+  border-top: 1.5px solid var(--ink);
+  padding-top: 1.5rem;
+}
+
+.about-info-item {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1.2rem;
-  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
-.info-label {
+.about-info-label {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
+  font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--accent);
-  min-width: 70px;
+  min-width: 80px;
   flex-shrink: 0;
 }
 
-.info-value {
+.about-info-value {
   color: var(--fg);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .about-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .about-index {
+    width: 48px;
+  }
+  .about-headline {
+    font-size: 4rem;
+  }
+  .about-body {
+    max-width: 100%;
+  }
+  .about-info {
+    margin-top: 2rem;
+  }
 }
 
 /* ========== 教育背景 ========== */
@@ -1319,42 +1151,46 @@ body {
 }
 
 /* ========== 项目经历 - 一级页面 ========== */
+/* ========== 项目分类网格 — Pentagram 直排架构 ========== */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0;
+  border: 1.5px solid var(--border);
 }
 
 .project-category-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--ground);
+  border-right: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: background-color 0.3s ease, color 0.3s ease;
   position: relative;
-  border-radius: 20px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
-  will-change: transform, box-shadow;
+  will-change: background-color, color;
+  grid-column: span 4;
 }
 
-/* 顶部视觉区域 */
+/* 顶部色块区域 — 图标居中 */
 .project-card-visual {
   position: relative;
-  height: 160px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(245,166,35,0.08) 0%, rgba(245,166,35,0.02) 100%);
+  background: var(--ground);
+  border-bottom: 1.5px solid var(--border);
   overflow: hidden;
 }
 
 .project-card-icon {
-  width: 64px;
-  height: 64px;
-  color: var(--accent);
-  opacity: 0.6;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  width: 56px;
+  height: 56px;
+  color: var(--ink);
+  opacity: 1;
   position: relative;
   z-index: 2;
 }
@@ -1362,22 +1198,12 @@ body {
 .project-card-icon svg {
   width: 100%;
   height: 100%;
-}
-
-/* 光晕效果 */
-.project-card-glow {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, rgba(245,166,35,0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  stroke-width: 1.5;
 }
 
 /* 内容区域 */
 .project-card-content {
-  padding: 1.5rem 2rem 2rem;
+  padding: 1.5rem 1.25rem 1.75rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1387,102 +1213,120 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
 }
 
 .project-card-tag {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.15em;
-  color: var(--accent);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--ground);
+  background: var(--ink);
   text-transform: uppercase;
-  padding: 0.2rem 0.6rem;
-  border: 1px solid rgba(245,166,35,0.3);
-  border-radius: 20px;
+  padding: 0.35rem 0.6rem;
+  border: none;
+  border-radius: 0;
 }
 
 .project-card-count {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--muted);
 }
 
 .project-card-content .project-card-title {
   font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--fg);
-  margin-bottom: 0.6rem;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
 }
 
 .project-card-desc {
   font-size: 0.85rem;
-  color: var(--muted);
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+  color: var(--fg-dim);
+  margin-bottom: 1.25rem;
   flex: 1;
 }
 
-/* 箭头按钮 */
+/* 箭头文字 */
 .project-card-arrow {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: var(--accent);
-  letter-spacing: 0.1em;
-  transition: gap 0.3s ease;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-top: 1.5px solid var(--border);
+  padding-top: 0.75rem;
 }
 
 .project-card-arrow svg {
-  width: 16px;
-  height: 16px;
-  transition: transform 0.3s ease;
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
 }
 
-/* Hover效果 */
+/* Hover效果 — 反色切换 */
 .project-category-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 
-    0 20px 50px rgba(44, 36, 32, 0.15),
-    0 8px 16px rgba(44, 36, 32, 0.08);
-  border-color: var(--accent);
+  background: var(--ink);
+  color: var(--ground);
 }
 
 .project-category-card:hover .project-card-icon {
-  opacity: 1;
-  transform: scale(1.1) rotate(-5deg);
+  color: var(--ground);
 }
 
-.project-category-card:hover .project-card-glow {
-  opacity: 1;
+.project-category-card:hover .project-card-title {
+  color: var(--ground);
+}
+
+.project-category-card:hover .project-card-desc {
+  color: rgba(244, 241, 231, 0.8);
+}
+
+.project-category-card:hover .project-card-count {
+  color: rgba(244, 241, 231, 0.6);
 }
 
 .project-category-card:hover .project-card-arrow {
-  gap: 0.8rem;
+  border-top-color: var(--accent);
 }
 
-.project-category-card:hover .project-card-arrow svg {
-  transform: translateX(4px);
+/* 响应式 */
+@media (max-width: 960px) {
+  .projects-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .project-category-card {
+    grid-column: span 1;
+    border-right: none;
+  }
 }
 
-/* ========== 项目浮层（二级页面） ========== */
+
+/* ========== 项目浮层（二级） — Pentagram 架构 ========== */
 .project-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(44, 36, 32, 0.28);
-  backdrop-filter: blur(24px) saturate(0.8);
-  -webkit-backdrop-filter: blur(24px) saturate(0.8);
+  background: rgba(17, 17, 17, 0.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   z-index: 2000;
   display: none;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: stretch;
   opacity: 0;
-  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.35s ease;
   will-change: opacity;
 }
 
@@ -1492,332 +1336,254 @@ body {
 }
 
 .project-panel {
-  background: var(--bg);
-  width: 90%;
-  max-width: 900px;
-  max-height: 85vh;
+  background: var(--ground);
+  width: 680px;
+  max-width: 100vw;
+  height: 100%;
   overflow-y: auto;
-  border-radius: 24px;
-  transform: scale(0.88) translateY(40px);
-  opacity: 0;
-  transition: transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.35s ease;
+  border-radius: 0;
+  transform: translateX(100%);
+  opacity: 1;
+  transition: transform 0.45s ease;
   position: relative;
-  box-shadow: 0 30px 100px rgba(44, 36, 32, 0.3);
-  will-change: transform, opacity;
+  box-shadow: none;
+  border-left: 1.5px solid var(--ink);
+  will-change: transform;
 }
 
-/* 滚动条样式优化 */
+.project-overlay.active .project-panel {
+  transform: translateX(0);
+}
+
 .project-panel::-webkit-scrollbar {
-  width: 6px;
-}
-
-.project-panel::-webkit-scrollbar-track {
-  background: transparent;
+  width: 4px;
 }
 
 .project-panel::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 3px;
-}
-
-.project-panel::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
-}
-
-.project-overlay.active .project-panel {
-  transform: scale(1) translateY(0);
-  opacity: 1;
 }
 
 .project-panel-header {
-  padding: 2rem 2.5rem 1.5rem;
+  padding: 2rem 2rem 1.5rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+  border-bottom: 1.5px solid var(--ink);
   position: sticky;
   top: 0;
-  background: rgba(255, 253, 250, 0.95);
+  background: var(--ground);
   z-index: 1;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .project-panel-title {
   font-family: var(--font-display);
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
 
 .project-panel-close {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--border);
-  background: var(--card);
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--ink);
+  background: var(--ground);
   cursor: pointer;
-  font-size: 1.4rem;
-  color: var(--muted);
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  font-size: 1.2rem;
+  color: var(--ink);
+  transition: background 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 0;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 .project-panel-close:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(245, 166, 35, 0.1);
-  transform: rotate(90deg);
+  background: var(--ink);
+  color: var(--ground);
 }
 
 .project-panel-body {
-  padding: 2rem 2.5rem;
+  padding: 0;
 }
 
-/* 面包屑导航 */
-.panel-breadcrumb {
+/* 分类组标题 */
+.project-category-group {
+  border-bottom: 1.5px solid var(--border);
+}
+
+.project-category-header {
+  padding: 1.25rem 2rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--muted);
-}
-
-.panel-breadcrumb span {
-  color: var(--accent);
+  justify-content: space-between;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: background 0.2s ease;
+  gap: 1rem;
 }
 
-.panel-breadcrumb span:hover {
-  color: var(--fg);
-}
-
-/* 项目列表项 */
-.project-list-item {
-  padding: 1.5rem 1.8rem;
-  border: 1px solid var(--border);
-  margin-bottom: 0.8rem;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  border-radius: 14px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  will-change: transform, background, border-color;
-}
-
-.project-list-item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 4px;
-  background: linear-gradient(180deg, var(--accent), var(--accent-dark));
-  transform: scaleY(0);
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  border-radius: 0 2px 2px 0;
-}
-
-.project-list-item:hover {
-  border-color: var(--accent);
-  background: rgba(245, 166, 35, 0.04);
-  transform: translateX(8px);
-  box-shadow: 0 6px 20px rgba(44, 36, 32, 0.08);
-}
-
-.project-list-item:hover::before {
-  transform: scaleY(1);
-}
-
-/* 列表项图标 */
-.project-list-icon {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(245,166,35,0.1), rgba(245,166,35,0.05));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.project-list-item:hover .project-list-icon {
-  background: linear-gradient(135deg, rgba(245,166,35,0.2), rgba(245,166,35,0.1));
-  transform: scale(1.05);
-}
-
-.project-list-info {
-  flex: 1;
-}
-
-.project-list-item-title {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.project-list-item-meta {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--muted);
-  letter-spacing: 0.05em;
-}
-
-.project-list-arrow {
-  color: var(--muted);
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-}
-
-.project-list-item:hover .project-list-arrow {
-  opacity: 1;
-  transform: translateX(0);
-  color: var(--accent);
-}
-
-/* 可展开列表 */
-.project-list-item.expandable {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0;
-}
-
-.project-list-item.expandable .expand-header {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  width: 100%;
-}
-
-.expand-toggle {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
+.project-category-header:hover {
   background: var(--card);
-  border: 1px solid var(--border);
+}
+
+.project-category-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.project-category-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
   color: var(--muted);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-left: auto;
+  letter-spacing: 0.15em;
+  white-space: nowrap;
 }
 
-.expand-toggle:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+.category-toggle {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
 }
 
-.expand-toggle svg {
+.category-toggle svg {
   width: 14px;
   height: 14px;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.expand-toggle.expanded svg {
+.category-toggle.expanded {
   transform: rotate(180deg);
 }
 
-/* 子列表 */
-.sub-list {
-  margin-top: 1rem;
-  padding-left: 3.5rem;
+/* 分类下的项目列表 */
+.category-projects {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.35s ease, margin-top 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  opacity: 0;
+  transition: max-height 0.4s ease;
+  background: var(--card);
 }
 
-.sub-list.expanded {
-  max-height: 600px;
-  opacity: 1;
+.category-projects.expanded {
+  max-height: 800px;
 }
 
-.sub-list-item {
-  padding: 0.9rem 1.2rem;
-  margin-bottom: 0.5rem;
-  cursor: pointer;
-  border-radius: 10px;
-  border: 1px solid transparent;
+.category-project-item {
+  padding: 1rem 2rem 1rem 3rem;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  will-change: background, transform;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background 0.3s ease, border-color 0.3s ease;
+  gap: 1rem;
+  cursor: pointer;
+  border-top: 1px solid var(--border);
+  transition: background 0.2s ease;
 }
 
-.sub-list.expanded .sub-list-item {
-  opacity: 1;
-  transform: translateY(0);
+.category-project-item:hover {
+  background: var(--bg);
 }
 
-.sub-list.expanded .sub-list-item:nth-child(1) { transition-delay: 0.08s; }
-.sub-list.expanded .sub-list-item:nth-child(2) { transition-delay: 0.16s; }
-.sub-list.expanded .sub-list-item:nth-child(3) { transition-delay: 0.24s; }
-.sub-list.expanded .sub-list-item:nth-child(4) { transition-delay: 0.32s; }
-
-.sub-list-item:hover {
-  background: rgba(245, 166, 35, 0.06);
-  border-color: var(--border);
-  transform: translateX(4px);
+.category-project-item:first-child {
+  border-top: none;
 }
 
-.sub-list-item-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
+.category-project-index {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--accent);
+  min-width: 20px;
 }
 
-.sub-list-item:hover .sub-list-item-dot {
-  opacity: 1;
-}
-
-.sub-list-item-title {
-  font-size: 0.95rem;
+.category-project-title {
+  font-size: 1rem;
   font-weight: 500;
   flex: 1;
 }
 
-.sub-list-item-meta {
+.category-project-meta {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--muted);
+  letter-spacing: 0.1em;
 }
 
-/* ========== 模态框（视频+详情） ========== */
+/* 简单项目列表（无子分类） */
+.project-simple-list {
+  border-bottom: 1.5px solid var(--border);
+}
+
+.project-simple-item {
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  border-top: 1.5px solid var(--border);
+  transition: background 0.2s ease;
+}
+
+.project-simple-item:first-child {
+  border-top: none;
+}
+
+.project-simple-item:hover {
+  background: var(--card);
+}
+
+.project-simple-index {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--accent);
+  min-width: 20px;
+}
+
+.project-simple-title {
+  font-size: 1rem;
+  font-weight: 500;
+  flex: 1;
+}
+
+.project-simple-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .project-panel {
+    width: 100vw;
+  }
+  .project-panel-title {
+    font-size: 2rem;
+  }
+}
+
+/* ========== 模态框（三级） — Pentagram 架构 ========== */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(44, 36, 32, 0.22);
-  backdrop-filter: blur(28px) saturate(0.7);
-  -webkit-backdrop-filter: blur(28px) saturate(0.7);
+  background: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   z-index: 3000;
   display: none;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: stretch;
   opacity: 0;
-  transition: opacity 0.45s ease;
+  transition: opacity 0.35s ease;
 }
 
 .modal-overlay.active {
@@ -1826,131 +1592,172 @@ body {
 }
 
 .modal-content {
-  background: var(--bg);
-  width: 92%;
-  max-width: 960px;
-  max-height: 90vh;
+  background: var(--ground);
+  width: 860px;
+  max-width: 100vw;
+  height: 100%;
   overflow-y: auto;
-  border-radius: 16px;
-  transform: scale(0.82) translateY(30px);
-  transition: transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 0;
+  transform: translateX(100%);
+  transition: transform 0.45s ease;
   position: relative;
+  border-left: 1.5px solid var(--ink);
 }
 
 .modal-overlay.active .modal-content {
-  transform: scale(1) translateY(0);
+  transform: translateX(0);
 }
 
 .modal-header {
-  padding: 1.5rem 2rem;
+  padding: 2rem 2rem 1.5rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+  border-bottom: 1.5px solid var(--ink);
   position: sticky;
   top: 0;
-  background: var(--bg);
+  background: var(--ground);
   z-index: 1;
 }
 
 .modal-title {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
 
 .modal-close {
-  width: 38px;
-  height: 38px;
-  border: 1px solid var(--border);
-  background: var(--card);
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--ink);
+  background: var(--ground);
   cursor: pointer;
   font-size: 1.2rem;
-  color: var(--muted);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  color: var(--ink);
+  transition: background 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 0;
+  flex-shrink: 0;
 }
 
 .modal-close:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(245, 166, 35, 0.1);
-  transform: rotate(90deg);
+  background: var(--ink);
+  color: var(--ground);
 }
 
 .modal-body {
-  padding: 2rem;
+  padding: 0;
 }
 
-.modal-video {
+/* 视频全宽展示 */
+.modal-video-full {
   width: 100%;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
+  display: block;
   background: #000;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 0;
+  aspect-ratio: 16/9;
   pointer-events: auto;
 }
 
-/* 隐藏视频原生下载按钮 */
-.modal-video::-webkit-media-controls-enclosure {
-  overflow: hidden;
+.modal-video-full.portrait {
+  aspect-ratio: auto;
 }
 
-.modal-video::-internal-media-controls-download-button {
-  display: none !important;
-}
-
-.modal-video::-webkit-media-controls-panel {
-  overflow: hidden;
-}
-
-.modal-video:hover {
-  transform: scale(1.01);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* 竖屏视频3列网格 */
+/* 竖屏多视频网格 */
 .video-grid-3col {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.8rem;
-  margin-bottom: 1.5rem;
+  gap: 0;
+  border-bottom: 1.5px solid var(--border);
 }
 
 .video-grid-3col .video-wrapper {
   position: relative;
+  background: #000;
 }
 
 .video-grid-3col video {
   width: 100%;
-  border-radius: 12px;
+  display: block;
+  border-radius: 0;
   background: #000;
 }
 
 .video-label {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.55rem;
   text-align: center;
   color: var(--muted);
-  margin-top: 0.4rem;
-  letter-spacing: 0.05em;
+  padding: 0.5rem 0;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--border);
+  background: var(--ground);
 }
 
-.modal-desc {
-  font-size: 1rem;
+/* 视频元数据垂直标注 */
+.modal-meta-grid {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.modal-meta-label {
+  padding: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-right: 1.5px solid var(--border);
+  background: var(--card);
+}
+
+.modal-meta-content {
+  padding: 2rem;
+  font-size: 0.9rem;
   line-height: 1.9;
-  color: var(--fg);
+  color: var(--fg-dim);
 }
 
-.modal-desc p {
+.modal-meta-content p {
   margin-bottom: 0.8rem;
 }
 
-.modal-desc strong {
-  color: var(--accent);
+.modal-meta-content strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 100vw;
+  }
+  .modal-title {
+    font-size: 1.6rem;
+  }
+  .modal-meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal-meta-label {
+    border-right: none;
+    border-bottom: 1.5px solid var(--border);
+    padding: 1rem 2rem;
+  }
+  .modal-meta-content {
+    padding: 1.5rem 2rem;
+  }
+  .video-grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* ========== 荣誉奖项 - 时间线布局 ========== */
@@ -2559,20 +2366,15 @@ body {
   }
 
   .project-panel {
-    width: 94%;
-    max-height: 88vh;
+    width: 520px;
   }
 
   .project-panel-header {
-    padding: 1.5rem 2rem 1rem;
-  }
-
-  .project-panel-body {
-    padding: 1.5rem 2rem;
+    padding: 1.5rem;
   }
 
   .modal-content {
-    width: 94%;
+    width: 680px;
   }
 
   .modal-body {
@@ -2761,22 +2563,6 @@ body {
     font-size: 0.9rem;
   }
 
-  /* About动画响应式 */
-  .about-big-text {
-    font-size: clamp(5rem, 22vw, 14rem);
-  }
-
-  .about-gradient-block {
-    width: 90%;
-    height: 40%;
-    filter: blur(50px);
-  }
-
-  .about-section.animation-done .about-big-text {
-    transform: translateX(0);
-    opacity: 0.25;
-  }
-
   /* 教育/经历 */
   .edu-header,
   .exp-header {
@@ -2812,7 +2598,7 @@ body {
   }
 
   .project-category-card {
-    padding: 2rem 1.5rem;
+    border-right: none;
   }
 
   .project-card-title {
@@ -2820,43 +2606,20 @@ body {
   }
 
   .project-panel {
-    width: 96%;
-    max-width: none;
-    max-height: 90vh;
-    max-height: 90dvh;
-    border-radius: 12px;
+    width: 100vw;
   }
 
   .project-panel-header {
-    padding: 1.2rem 1.5rem 0.8rem;
-    flex-direction: column;
-    gap: 0.8rem;
-    align-items: flex-start;
+    padding: 1.5rem;
   }
 
   .project-panel-title {
-    font-size: 1.4rem;
-  }
-
-  .project-panel-body {
-    padding: 1.2rem 1.5rem;
-  }
-
-  .project-list-item {
-    padding: 1.2rem;
-  }
-
-  .project-list-item-title {
-    font-size: 1rem;
+    font-size: 1.6rem;
   }
 
   /* 模态框 */
   .modal-content {
-    width: 96%;
-    max-width: none;
-    max-height: 92vh;
-    max-height: 92dvh;
-    border-radius: 12px;
+    width: 100vw;
   }
 
   .modal-header {
@@ -3039,14 +2802,6 @@ body {
 
   .video-grid-3col {
     grid-template-columns: 1fr;
-  }
-
-  .project-category-card {
-    padding: 1.5rem 1.2rem;
-  }
-
-  .project-card-icon {
-    font-size: 1.5rem;
   }
 
   .project-card-title {
@@ -3262,12 +3017,7 @@ body {
   }
 
   .projects-grid {
-    gap: 0.8rem;
-  }
-
-  .project-category-card {
-    gap: 0.8rem;
-    padding: 1.2rem 1rem;
+    gap: 0;
   }
 
   /* 荣誉 */
@@ -3356,11 +3106,7 @@ body {
   }
 
   .projects-grid {
-    gap: 2.5rem;
-  }
-
-  .project-category-card {
-    padding: 3rem 2.5rem;
+    gap: 0;
   }
 
   .skills-grid {
@@ -3424,10 +3170,6 @@ body {
   /* 增大触控目标 */
   .nav-links a {
     padding: 0.8rem 1rem;
-  }
-
-  .project-list-item {
-    padding: 1.8rem;
   }
 }
 
@@ -3620,48 +3362,22 @@ body {
 </section>
 
 <section class="section about-section" id="about">
-  <!-- 动画舞台 -->
-  <div class="about-stage">
-    <!-- 大字背景层 -->
-    <div class="about-big-text" aria-hidden="true">ABOUT</div>
-    <!-- 渐变色块层 -->
-    <div class="about-gradient-block" aria-hidden="true"></div>
-    <!-- 内容层 -->
-    <div class="about-content-wrapper">
-      <div class="section-header about-header">
-        <div class="section-number">01 / 关于</div>
-        <h2 class="section-title">About</h2>
-        <div class="section-divider"></div>
-      </div>
-      <div class="about-grid">
-        <div class="about-text">
-          <p>来自四川、现居广佛，毕业于广州华夏职业学院影视多媒体技术专业。拥有从前期摄像到后期特效的全流程经验，擅长信息流剪辑、电商主图视频与IP孵化，对AI影视化流程有深入研究。目前在一线传媒公司担任主剪。</p>
-          <p>我相信技术是创意的延伸——每一帧画面都承载着故事，每一次剪辑都是对时间的重新雕刻。从传统影视制作到AI辅助创作，我始终在探索影像表达的边界。</p>
-        </div>
-        <div class="about-info-card">
-          <img src="avatar.jpg" alt="李嘉豪" class="about-avatar" loading="lazy" decoding="async">
-          <div class="info-item">
-            <span class="info-label">Email</span>
-            <span class="info-value">184****@qq.com</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Phone</span>
-            <span class="info-value">130****8798</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">WeChat</span>
-            <span class="info-value">YeQuee</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Location</span>
-            <span class="info-value">广州 / 佛山</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Age</span>
-            <span class="info-value">23岁</span>
-          </div>
-        </div>
-      </div>
+  <div class="about-block">
+    <div class="about-index">01</div>
+    <div class="about-headline">About</div>
+    <div class="about-body">
+      <p>来自四川、现居广佛，毕业于广州华夏职业学院影视多媒体技术专业。拥有从前期摄像到后期特效的全流程经验，擅长信息流剪辑、电商主图视频与IP孵化，对AI影视化流程有深入研究。目前在一线传媒公司担任主剪。</p>
+      <p>我相信技术是创意的延伸——每一帧画面都承载着故事，每一次剪辑都是对时间的重新雕刻。从传统影视制作到AI辅助创作，我始终在探索影像表达的边界。</p>
+    </div>
+    <div class="about-info">
+      <img src="avatar.jpg" alt="李嘉豪" class="about-avatar" loading="lazy" decoding="async">
+      <ul class="about-info-list">
+        <li class="about-info-item"><span class="about-info-label">Email</span><span class="about-info-value">184****@qq.com</span></li>
+        <li class="about-info-item"><span class="about-info-label">Phone</span><span class="about-info-value">130****8798</span></li>
+        <li class="about-info-item"><span class="about-info-label">WeChat</span><span class="about-info-value">YeQuee</span></li>
+        <li class="about-info-item"><span class="about-info-label">Location</span><span class="about-info-value">广州 / 佛山</span></li>
+        <li class="about-info-item"><span class="about-info-label">Age</span><span class="about-info-value">23岁</span></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -3739,7 +3455,6 @@ body {
             <path d="M12 6v6l4 2"/>
           </svg>
         </div>
-        <div class="project-card-glow"></div>
       </div>
       <div class="project-card-content">
         <div class="project-card-meta">
@@ -3765,7 +3480,6 @@ body {
             <line x1="12" y1="17" x2="12" y2="21"/>
           </svg>
         </div>
-        <div class="project-card-glow"></div>
       </div>
       <div class="project-card-content">
         <div class="project-card-meta">
@@ -3791,7 +3505,6 @@ body {
             <path d="M2 12l10 5 10-5"/>
           </svg>
         </div>
-        <div class="project-card-glow"></div>
       </div>
       <div class="project-card-content">
         <div class="project-card-meta">
@@ -4345,110 +4058,6 @@ revealElements.forEach(function(el) {
   revealObserver.observe(el);
 });
 
-// ========== About板块滚动动画 ==========
-(function() {
-  var aboutSection = document.getElementById('about');
-  if (!aboutSection) return;
-
-  var bigText = aboutSection.querySelector('.about-big-text');
-  var gradientBlock = aboutSection.querySelector('.about-gradient-block');
-  var contentWrapper = aboutSection.querySelector('.about-content-wrapper');
-
-  var animationTriggered = false;
-  var animationCompleted = false;
-  var phaseTimers = [];
-
-  function clearPhaseTimers() {
-    for (var i = 0; i < phaseTimers.length; i++) {
-      clearTimeout(phaseTimers[i]);
-    }
-    phaseTimers = [];
-  }
-
-  function triggerAboutAnimation() {
-    if (animationTriggered || animationCompleted) return;
-    animationTriggered = true;
-
-    // 阶段1: 大字从左侧划入，沾满整个section
-    if (bigText) {
-      bigText.classList.add('phase-slide-in');
-    }
-
-    // 阶段2: 大字渐隐到背景（25%不透明度）- 在划入完成后触发
-    var t1 = setTimeout(function() {
-      if (bigText) {
-        bigText.classList.remove('phase-slide-in');
-        bigText.classList.add('phase-fade-bg');
-      }
-      // 同时渐变色块显现
-      if (gradientBlock) {
-        gradientBlock.classList.add('phase-reveal');
-      }
-    }, 1000);
-
-    // 阶段3: 内容弹出 - 在渐隐过程中触发
-    var t2 = setTimeout(function() {
-      if (contentWrapper) {
-        contentWrapper.classList.add('phase-reveal');
-      }
-    }, 1600);
-
-    // 动画全部完成后添加完成状态类
-    var t3 = setTimeout(function() {
-      aboutSection.classList.add('animation-done');
-      animationCompleted = true;
-      // 清理动画类，避免后续冲突
-      if (bigText) {
-        bigText.classList.remove('phase-slide-in', 'phase-fade-bg');
-      }
-      if (gradientBlock) {
-        gradientBlock.classList.remove('phase-reveal');
-      }
-      if (contentWrapper) {
-        contentWrapper.classList.remove('phase-reveal');
-      }
-      clearPhaseTimers();
-    }, 3200);
-
-    phaseTimers.push(t1, t2, t3);
-  }
-
-  // 使用 Intersection Observer 检测进入视口
-  var aboutObserver = new IntersectionObserver(function(entries) {
-    for (var i = 0; i < entries.length; i++) {
-      if (entries[i].isIntersecting && entries[i].intersectionRatio >= 0.15) {
-        triggerAboutAnimation();
-        aboutObserver.unobserve(aboutSection);
-        break;
-      }
-    }
-  }, {
-    threshold: [0.15],
-    rootMargin: '0px 0px -5% 0px'
-  });
-
-  aboutObserver.observe(aboutSection);
-
-  // 备用：如果页面加载时about已经在视口内（如从锚点跳转）
-  function checkAboutInView() {
-    var rect = aboutSection.getBoundingClientRect();
-    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < windowHeight * 0.85 && rect.bottom > 0) {
-      triggerAboutAnimation();
-    }
-  }
-
-  // 页面加载后检查一次
-  if (document.readyState === 'complete') {
-    checkAboutInView();
-  } else {
-    window.addEventListener('load', checkAboutInView);
-  }
-
-  // 页面离开时清理定时器，预防内存泄漏
-  window.addEventListener('beforeunload', clearPhaseTimers);
-})();
-
 // ========== 荣誉奖项时间线动画 ==========
 const honorYearGroups = document.querySelectorAll('.honor-year-group');
 const honorCards = document.querySelectorAll('.honor-card');
@@ -4721,7 +4330,7 @@ if (heroVideo) {
   });
 }
 
-// ========== 项目浮层（二级页面） ==========
+// ========== 项目浮层（二级页面） — Pentagram 架构 ==========
 function openProjectPanel(category) {
   const overlay = document.getElementById('projectOverlay');
   const title = document.getElementById('projectPanelTitle');
@@ -4730,103 +4339,88 @@ function openProjectPanel(category) {
   let html = '';
 
   if (category === 'early') {
-    title.textContent = '早期项目';
-    html = buildProjectListItem('project3', '绽放人生之美', '横屏视频') +
-           buildProjectListItem('project4', '赤尾系列广告', '竖屏视频 · 3支') +
-           buildProjectListItem('project5', '梦·非梦', '横屏视频') +
-           buildProjectListItem('project_mg', '顺德农商银行MG动画', '横屏视频');
+    title.textContent = '项目';
+    html += '<div class="project-simple-list">';
+    html += buildSimpleItem('project3', '绽放人生之美', '横屏视频');
+    html += buildSimpleItem('project4', '赤尾系列广告', '竖屏 · 3支');
+    html += buildSimpleItem('project5', '梦·非梦', '横屏视频');
+    html += buildSimpleItem('project_mg', '顺德农商银行MG动画', '横屏视频');
+    html += '</div>';
   } else if (category === 'work') {
-    title.textContent = '工作项目';
-    // 创意信息流（可展开子列表）
-    html = '<div class="project-list-item expandable">' +
-           '<div class="expand-header">' +
-           '<div class="project-list-icon">&#9654;</div>' +
-           '<div class="project-list-info">' +
-           '<div class="project-list-item-title">创意信息流</div>' +
-           '<div class="project-list-item-meta">3个品牌 · 竖屏视频</div>' +
-           '</div>' +
-           '<button class="expand-toggle" onclick="event.stopPropagation(); toggleSubList(this)">' +
-           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>' +
-           '</button></div>' +
-           '<div class="sub-list">' +
-           buildSubListItem('work_jinweita', '金维他', '竖屏 · 3支') +
-           buildSubListItem('work_samsung', '三星信息流', '竖屏 · 3支') +
-           buildSubListItem('work_mofei', '摩飞', '竖屏 · 3支') +
-           '</div></div>';
-    // IP孵化（可展开子列表）
-    html += '<div class="project-list-item expandable">' +
-            '<div class="expand-header">' +
-            '<div class="project-list-icon">&#9654;</div>' +
-            '<div class="project-list-info">' +
-            '<div class="project-list-item-title">IP孵化</div>' +
-            '<div class="project-list-item-meta">2个品牌 · 竖屏视频</div>' +
-            '</div>' +
-            '<button class="expand-toggle" onclick="event.stopPropagation(); toggleSubList(this)">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>' +
-            '</button></div>' +
-            '<div class="sub-list">' +
-            buildSubListItem('work_ximanju_all', '喜满居饭店IP', '竖屏 · 3支') +
-            buildSubListItem('work_ronghua_all', '荣华彩印视频号IP', '竖屏 · 4支') +
-            '</div></div>';
-    // 主图视频（可展开子列表）
-    html += '<div class="project-list-item expandable">' +
-            '<div class="expand-header">' +
-            '<div class="project-list-icon">&#9654;</div>' +
-            '<div class="project-list-info">' +
-            '<div class="project-list-item-title">主图视频</div>' +
-            '<div class="project-list-item-meta">2个产品 · 横屏视频</div>' +
-            '</div>' +
-            '<button class="expand-toggle" onclick="event.stopPropagation(); toggleSubList(this)">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>' +
-            '</button></div>' +
-            '<div class="sub-list">' +
-            buildSubListItem('work_xiaotiane', '小天鹅滚筒', '横屏视频') +
-            buildSubListItem('work_dianreitan', '电热毯', '横屏视频') +
-            '</div></div>';
+    title.textContent = '项目';
+    // 创意信息流
+    html += buildCategoryGroup('创意信息流', '3个品牌 · 竖屏视频', [
+      { key: 'work_jinweita', title: '金维他', meta: '竖屏 · 3支' },
+      { key: 'work_samsung', title: '三星信息流', meta: '竖屏 · 3支' },
+      { key: 'work_mofei', title: '摩飞', meta: '竖屏 · 3支' }
+    ]);
+    // IP孵化
+    html += buildCategoryGroup('IP孵化', '2个品牌 · 竖屏视频', [
+      { key: 'work_ximanju_all', title: '喜满居饭店IP', meta: '竖屏 · 3支' },
+      { key: 'work_ronghua_all', title: '荣华彩印视频号IP', meta: '竖屏 · 4支' }
+    ]);
+    // 主图视频
+    html += buildCategoryGroup('主图视频', '2个产品 · 横屏视频', [
+      { key: 'work_xiaotiane', title: '小天鹅滚筒', meta: '横屏视频' },
+      { key: 'work_dianreitan', title: '电热毯', meta: '横屏视频' }
+    ]);
   } else if (category === 'ai') {
-    title.textContent = '个人AI项目';
-    html = buildProjectListItem('ai1', '动物vlog', '横屏视频') +
-           buildProjectListItem('ai2', '动物访谈', '横屏视频') +
-           buildProjectListItem('ai3', '保温杯创意广告', '横屏视频') +
-           buildProjectListItem('ai4', '可灵AI x 大众速腾 AI创意大赛', '横屏视频');
+    title.textContent = '项目';
+    html += '<div class="project-simple-list">';
+    html += buildSimpleItem('ai1', '动物vlog', '横屏视频');
+    html += buildSimpleItem('ai2', '动物访谈', '横屏视频');
+    html += buildSimpleItem('ai3', '保温杯创意广告', '横屏视频');
+    html += buildSimpleItem('ai4', '可灵AI × 大众速腾 AI创意大赛', '横屏视频');
+    html += '</div>';
   }
 
   body.innerHTML = html;
 
-  // 显示浮层
   overlay.style.display = 'flex';
-  // 触发重排后添加动画类
   requestAnimationFrame(function() {
     overlay.classList.add('active');
   });
   document.body.style.overflow = 'hidden';
 }
 
-function buildProjectListItem(key, title, meta) {
-  return '<div class="project-list-item" onclick="event.stopPropagation(); openModal(\'' + key + '\')">' +
-         '<div class="project-list-icon">&#9654;</div>' +
-         '<div class="project-list-info">' +
-         '<div class="project-list-item-title">' + title + '</div>' +
-         '<div class="project-list-item-meta">' + meta + '</div>' +
-         '</div>' +
-         '<div class="project-list-arrow">&#8594;</div>' +
-         '</div>';
+function buildCategoryGroup(catName, catMeta, items) {
+  var h = '<div class="project-category-group">' +
+    '<div class="project-category-header" onclick="event.stopPropagation(); toggleCategoryGroup(this)">' +
+    '<div class="project-category-name">' + catName + '</div>' +
+    '<div class="project-category-meta">' + catMeta + '</div>' +
+    '<div class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>' +
+    '</div>' +
+    '<div class="category-projects">';
+  for (var i = 0; i < items.length; i++) {
+    h += '<div class="category-project-item" onclick="event.stopPropagation(); openModal(\'' + items[i].key + '\')">' +
+      '<span class="category-project-index">' + zeroPad(i + 1) + '</span>' +
+      '<span class="category-project-title">' + items[i].title + '</span>' +
+      '<span class="category-project-meta">' + items[i].meta + '</span>' +
+      '</div>';
+  }
+  h += '</div></div>';
+  return h;
 }
 
-function buildSubListItem(key, title, meta) {
-  return '<div class="sub-list-item" onclick="event.stopPropagation(); openModal(\'' + key + '\')">' +
-         '<div class="sub-list-item-dot"></div>' +
-         '<div class="sub-list-item-title">' + title + '</div>' +
-         '<div class="sub-list-item-meta">' + meta + '</div>' +
-         '</div>';
+function buildSimpleItem(key, title, meta) {
+  return '<div class="project-simple-item" onclick="event.stopPropagation(); openModal(\'' + key + '\')">' +
+    '<span class="project-simple-index">—</span>' +
+    '<span class="project-simple-title">' + title + '</span>' +
+    '<span class="project-simple-meta">' + meta + '</span>' +
+    '</div>';
 }
 
-function toggleSubList(btn) {
-  const item = btn.closest('.project-list-item.expandable');
-  const subList = item.querySelector('.sub-list');
-  if (subList) {
-    subList.classList.toggle('expanded');
-    btn.classList.toggle('expanded');
+function zeroPad(n) {
+  return n < 10 ? '0' + n : '' + n;
+}
+
+function toggleCategoryGroup(el) {
+  var group = el.closest('.project-category-group');
+  var projects = group.querySelector('.category-projects');
+  var toggle = group.querySelector('.category-toggle');
+  if (projects) {
+    projects.classList.toggle('expanded');
+    toggle.classList.toggle('expanded');
   }
 }
 
@@ -4845,7 +4439,7 @@ function closeProjectPanelDirect() {
   }, 500);
 }
 
-// ========== 模态框（三级页面 - 视频详情） ==========
+// ========== 模态框（三级页面） — Pentagram 架构 ==========
 function openModal(key) {
   const project = projectData[key];
   if (!project) return;
@@ -4856,35 +4450,36 @@ function openModal(key) {
 
   title.textContent = project.title;
 
-  let html = '';
+  var html = '';
 
-  // 判断视频展示方式
   if (project.portrait && project.videos) {
-    // 竖屏视频：3列网格
+    // 竖屏多视频：3列网格
     html += '<div class="video-grid-3col">';
     project.videos.forEach(function(videoSrc, index) {
-      const label = project.videoLabels ? project.videoLabels[index] : '';
+      var label = project.videoLabels ? project.videoLabels[index] : '';
       html += '<div class="video-wrapper">' +
-              '<video class="modal-video" controls preload="metadata">' +
-              '<source src="' + videoSrc + '" type="video/mp4">您的浏览器不支持视频播放</video>' +
-              (label ? '<div class="video-label">' + label + '</div>' : '') +
-              '</div>';
+        '<video controls preload="metadata">' +
+        '<source src="' + videoSrc + '" type="video/mp4"></video>' +
+        (label ? '<div class="video-label">' + label + '</div>' : '') +
+        '</div>';
     });
     html += '</div>';
   } else if (project.video) {
-    // 横屏视频：16:9单视频
-    html += '<video class="modal-video" controls preload="metadata" style="aspect-ratio:16/9">' +
-            '<source src="' + project.video + '" type="video/mp4">您的浏览器不支持视频播放</video>';
+    // 横屏单视频
+    html += '<video class="modal-video-full" controls preload="metadata">' +
+      '<source src="' + project.video + '" type="video/mp4"></video>';
   }
 
-  // 描述文字
+  // 元数据网格
   if (project.content) {
-    html += '<div class="modal-desc">' + project.content + '</div>';
+    html += '<div class="modal-meta-grid">' +
+      '<div class="modal-meta-label">项目信息</div>' +
+      '<div class="modal-meta-content">' + project.content + '</div>' +
+      '</div>';
   }
 
   body.innerHTML = html;
 
-  // 显示模态框
   overlay.style.display = 'flex';
   requestAnimationFrame(function() {
     overlay.classList.add('active');
@@ -4902,7 +4497,6 @@ function closeModalDirect() {
   const overlay = document.getElementById('modalOverlay');
   overlay.classList.remove('active');
 
-  // 立即暂停模态框内所有正在播放的视频
   var modalVideos = overlay.querySelectorAll('video');
   for (var i = 0; i < modalVideos.length; i++) {
     if (!modalVideos[i].paused) {
@@ -4912,7 +4506,6 @@ function closeModalDirect() {
 
   setTimeout(function() {
     overlay.style.display = 'none';
-    // 检查项目浮层是否还打开
     const projectOverlay = document.getElementById('projectOverlay');
     if (!projectOverlay.classList.contains('active')) {
       document.body.style.overflow = '';
