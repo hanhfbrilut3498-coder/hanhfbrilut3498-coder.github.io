@@ -25,21 +25,18 @@
 <style>
 /* ========== CSS 变量 & 基础重置 ========== */
 :root {
-  /* Pentagram 信息架构色系 */
-  --bg: #F4F1E7;
-  --bg-sand: #E8E3D6;
+  /* 暖调单色系 — 与Hero深色背景协调，精简至8个核心变量 */
+  --bg: #F5F0EA;
   --fg: #111111;
-  --fg-dim: #333333;
-  --accent: #B83A1F;
-  --accent-dark: #8C2B14;
-  --muted: #6B6358;
-  --card: #ECE8DE;
-  --border: #C4BFB2;
-  --border-light: #D6D1C6;
-  --dark: #111111;
+  --fg-dim: #3A3530;
+  --accent: #D4760A;
+  --accent-dark: #A85C08;
+  --muted: #8B7E6E;
+  --card: #EDE8E0;
+  --border: #C8C0B2;
   --ink: #111111;
-  --ground: #F4F1E7;
-  /* Pentagram 排版系统 — 无衬线主导 */
+  --ground: #F5F0EA;
+  /* 排版系统 */
   --font-display: 'Helvetica Neue', 'Helvetica', 'Arial', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-body: 'Helvetica Neue', 'Helvetica', 'Arial', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace;
@@ -62,8 +59,9 @@ body {
   background-color: var(--bg);
   line-height: 1.8;
   overflow-x: hidden;
-  /* 纸张质感背景纹理 */
+  /* 纸张质感 + 涂鸦肌理背景 */
   background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%23D4760A' stroke-width='1.2' opacity='0.08'%3E%3Ccircle cx='60' cy='80' r='18'/%3E%3Ccircle cx='65' cy='75' r='6' fill='%23D4760A'/%3E%3Cpath d='M100 60 Q120 40 140 60 T180 55'/%3E%3Cpath d='M95 70 Q115 85 135 70' stroke-width='0.8'/%3E%3Cline x1='50' y1='120' x2='90' y2='115'/%3E%3Cline x1='55' y1='130' x2='85' y2='125' stroke-width='0.6'/%3E%3Ccircle cx='200' cy='40' r='12'/%3E%3Ccircle cx='340' cy='60' r='22'/%3E%3Ccircle cx='345' cy='55' r='8' fill='%23D4760A'/%3E%3Cpath d='M300 30 Q320 15 340 30 T380 25'/%3E%3Cpath d='M310 45 Q325 55 340 45' stroke-width='0.7'/%3E%3Cline x1='20' y1='180' x2='60' y2='170'/%3E%3Cline x1='25' y1='190' x2='55' y2='185' stroke-width='0.5'/%3E%3Ccircle cx='120' cy='200' r='14'/%3E%3Cpath d='M140 190 Q160 175 180 190 T220 185'/%3E%3Cpath d='M135 205 Q155 220 175 205' stroke-width='0.7'/%3E%3Ccircle cx='300' cy='180' r='10'/%3E%3Ccircle cx='370' cy='200' r='16'/%3E%3Cpath d='M350 185 Q365 170 380 185' stroke-width='0.8'/%3E%3Cline x1='80' y1='260' x2='130' y2='255'/%3E%3Cline x1='85' y1='270' x2='125' y2='265' stroke-width='0.5'/%3E%3Ccircle cx='200' cy='280' r='20'/%3E%3Ccircle cx='205' cy='275' r='7' fill='%23D4760A'/%3E%3Cpath d='M230 270 Q250 255 270 270'/%3E%3Cpath d='M225 285 Q245 300 265 285' stroke-width='0.6'/%3E%3Ccircle cx='350' cy='300' r='12'/%3E%3Cpath d='M330 290 Q345 278 360 290' stroke-width='0.7'/%3E%3Cline x1='30' y1='340' x2='70' y2='335'/%3E%3Ccircle cx='140' cy='350' r='15'/%3E%3Cpath d='M160 340 Q180 325 200 340 T240 335'/%3E%3Ccircle cx='290' cy='360' r='18'/%3E%3Ccircle cx='295' cy='355' r='6' fill='%23D4760A'/%3E%3Cpath d='M310 350 Q325 340 340 350' stroke-width='0.8'/%3E%3Cline x1='10' y1='90' x2='30' y2='88' stroke-width='0.4'/%3E%3Cline x1='380' y1='120' x2='395' y2='118' stroke-width='0.4'/%3E%3Cline x1='370' y1='250' x2='390' y2='248' stroke-width='0.4'/%3E%3Cline x1='15' y1='300' x2='35' y2='298' stroke-width='0.4'/%3E%3C/g%3E%3Cg fill='%23D4760A' opacity='0.06'%3E%3Ccircle cx='45' cy='45' r='2'/%3E%3Ccircle cx='180' cy='55' r='2.5'/%3E%3Ccircle cx='260' cy='30' r='1.5'/%3E%3Ccircle cx='320' cy='100' r='2'/%3E%3Ccircle cx='90' cy='150' r='2'/%3E%3Ccircle cx='250' cy='140' r='1.5'/%3E%3Ccircle cx='380' cy='150' r='2'/%3E%3Ccircle cx='30' cy='230' r='2.5'/%3E%3Ccircle cx='150' cy='250' r='1.5'/%3E%3Ccircle cx='280' cy='230' r='2'/%3E%3Ccircle cx='340' cy='250' r='1.5'/%3E%3Ccircle cx='60' cy='310' r='2'/%3E%3Ccircle cx='200' cy='330' r='2.5'/%3E%3Ccircle cx='310' cy='320' r='1.5'/%3E%3Ccircle cx='370' cy='340' r='2'/%3E%3Ccircle cx='100' cy='380' r='2'/%3E%3Ccircle cx='240' cy='370' r='1.5'/%3E%3Ccircle cx='330' cy='390' r='2'/%3E%3C/g%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
@@ -181,7 +179,7 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-sand);
+  background: var(--card);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border);
@@ -1273,14 +1271,18 @@ body {
   stroke-width: 2;
 }
 
-/* Hover效果 — 反色切换 */
+/* Hover效果 — 反色切换，图标保持可见 */
 .project-category-card:hover {
   background: var(--ink);
   color: var(--ground);
 }
 
 .project-category-card:hover .project-card-icon {
-  color: var(--ground);
+  color: var(--accent);
+}
+
+.project-category-card:hover .project-card-visual {
+  background: var(--ink);
 }
 
 .project-category-card:hover .project-card-title {
@@ -1961,7 +1963,7 @@ body {
 
 /* 背面 */
 .honor-card-back {
-  background: var(--dark);
+  background: var(--ink);
   color: var(--bg);
   transform: rotateY(180deg);
   display: flex;
@@ -3366,8 +3368,8 @@ body {
     <div class="about-index">01</div>
     <div class="about-headline">About</div>
     <div class="about-body">
-      <p>来自四川、现居广佛，毕业于广州华夏职业学院影视多媒体技术专业。拥有从前期摄像到后期特效的全流程经验，擅长信息流剪辑、电商主图视频与IP孵化，对AI影视化流程有深入研究。目前在一线传媒公司担任主剪。</p>
-      <p>我相信技术是创意的延伸——每一帧画面都承载着故事，每一次剪辑都是对时间的重新雕刻。从传统影视制作到AI辅助创作，我始终在探索影像表达的边界。</p>
+      <p>从四川到广佛，从课堂到片场——我用镜头丈量世界。影视多媒体技术专业出身，拥有从前期拍摄到后期特效的全流程掌控力。在信息流广告的黄金三秒里捕捉注意力，在电商主图视频中雕琢产品质感，在IP孵化项目里构建品牌叙事。目前在一线传媒公司担任主剪，同时深耕AI影视化创作，探索提示词与像素之间的无限可能。</p>
+      <p>剪辑于我，不是删除，而是对时间的重新定义。从传统影视到AI辅助创作，每一帧都是一次选择，每一次选择都在塑造新的表达边界。</p>
     </div>
     <div class="about-info">
       <img src="avatar.jpg" alt="李嘉豪" class="about-avatar" loading="lazy" decoding="async">
