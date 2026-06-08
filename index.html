@@ -348,7 +348,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
 }
 
@@ -358,8 +358,7 @@ body {
   object-fit: cover;
   filter: blur(12px) brightness(0.6);
   transform: scale(1.15);
-  will-change: transform, filter;
-  transition: filter 0.8s ease, transform 0.8s ease;
+  will-change: transform;
 }
 
 .hero-video-overlay {
@@ -374,13 +373,7 @@ body {
     rgba(0, 0, 0, 0.4) 50%,
     rgba(0, 0, 0, 0.5) 100%
   );
-  z-index: 1;
-  animation: overlayPulse 8s ease-in-out infinite;
-}
-
-@keyframes overlayPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
+  z-index: 2;
 }
 
 /* 视频加载失败时的备选背景 */
@@ -391,7 +384,7 @@ body {
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  z-index: 0;
+  z-index: 1;
   display: none;
 }
 
@@ -406,13 +399,13 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
 }
 
 .hero-content {
   position: relative;
-  z-index: 3;
+  z-index: 10;
 }
 
 /* 头像 */
@@ -484,7 +477,7 @@ body {
 
 /* ========== 首页大标题：wrapper(3D看向鼠标) + flipper(触碰翻转) ========== */
 
-/* 外层wrapper - 负责3D看向效果（小角度倾斜，不旋转） */
+/* 外层wrapper - 3D看向效果 */
 .hero-name-wrapper {
   display: inline-block;
   margin-bottom: 1rem;
@@ -493,7 +486,7 @@ body {
   will-change: transform;
 }
 
-/* 内层flipper - 负责触碰水平翻转 */
+/* 内层flipper - 触碰水平翻转 */
 .hero-name-flipper {
   font-family: 'Lilita One', cursive;
   font-size: clamp(3.2rem, 11vw, 8rem);
@@ -504,53 +497,27 @@ body {
   transform-style: preserve-3d;
   display: inline-block;
   position: relative;
-  width: auto;
-  height: auto;
   cursor: pointer;
 }
 
-/* 正面和背面通用样式 - 无text-shadow，阴影用独立层 */
+/* 正面和背面通用样式 */
 .hero-name-front,
 .hero-name-back {
   display: inline-block;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
-  transform-style: preserve-3d;
   position: relative;
-  z-index: 10;
 }
 
-/* 独立阴影层 - 位于文字后方，使用CSS变量控制偏移 */
-.hero-name-front,
-.hero-name-back {
-  --shadow-x: 4px;
-  --shadow-y: 4px;
-}
-
-.hero-name-front::before,
-.hero-name-back::before {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  color: transparent;
-  pointer-events: none;
-  transition: transform 0.1s ease-out;
-  /* 多层色块阴影，使用CSS变量动态偏移 */
-  text-shadow:
-    calc(var(--shadow-x) * 1) calc(var(--shadow-y) * 1) 0 rgba(245,166,35,1),
-    calc(var(--shadow-x) * 2) calc(var(--shadow-y) * 2) 0 rgba(230,120,0,0.85),
-    calc(var(--shadow-x) * 3) calc(var(--shadow-y) * 3) 0 rgba(200,80,0,0.65),
-    calc(var(--shadow-x) * 4) calc(var(--shadow-y) * 4) 0 rgba(150,50,0,0.45),
-    calc(var(--shadow-x) * 5) calc(var(--shadow-y) * 5) 0 rgba(100,30,0,0.25);
-}
-
-/* 正面 - Welcome here（默认可见） */
+/* 简化阴影：单层text-shadow，无伪元素动态偏移 */
 .hero-name-front {
   transform: rotateY(0deg);
   opacity: 1;
+  text-shadow:
+    4px 4px 0 rgba(245,166,35,1),
+    8px 8px 0 rgba(230,120,0,0.7),
+    12px 12px 0 rgba(200,80,0,0.4);
 }
 
 /* 背面 - 李嘉豪（默认隐藏） */
@@ -564,6 +531,10 @@ body {
   font-family: 'Noto Serif SC', serif;
   font-weight: 600;
   font-size: clamp(3.5rem, 12vw, 9rem);
+  text-shadow:
+    4px 4px 0 rgba(245,166,35,1),
+    8px 8px 0 rgba(230,120,0,0.7),
+    12px 12px 0 rgba(200,80,0,0.4);
 }
 
 /* 触碰翻转类（由JS添加/移除） */
@@ -577,33 +548,33 @@ body {
   opacity: 1;
 }
 
-/* 逐字翻转入场动画 */
+/* 逐字翻转入场动画 - 仅使用transform和opacity（GPU加速） */
 .hero-name-front .char,
 .hero-name-back .char {
   display: inline-block;
   opacity: 0;
-  transform: translateY(80px) rotateX(90deg);
-  animation: charFlipIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  transform: translateY(60px) rotateX(60deg);
+  animation: charFlipIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 /* Welcome here 逐字延迟 */
-.hero-name-front .char:nth-child(1) { animation-delay: 0.4s; }
-.hero-name-front .char:nth-child(2) { animation-delay: 0.48s; }
-.hero-name-front .char:nth-child(3) { animation-delay: 0.56s; }
-.hero-name-front .char:nth-child(4) { animation-delay: 0.64s; }
-.hero-name-front .char:nth-child(5) { animation-delay: 0.72s; }
-.hero-name-front .char:nth-child(6) { animation-delay: 0.80s; }
-.hero-name-front .char:nth-child(7) { animation-delay: 0.88s; }
-.hero-name-front .char:nth-child(8) { animation-delay: 0.96s; }
-.hero-name-front .char:nth-child(9) { animation-delay: 1.04s; }
-.hero-name-front .char:nth-child(10) { animation-delay: 1.12s; }
-.hero-name-front .char:nth-child(11) { animation-delay: 1.20s; }
-.hero-name-front .char:nth-child(12) { animation-delay: 1.28s; }
+.hero-name-front .char:nth-child(1) { animation-delay: 0.3s; }
+.hero-name-front .char:nth-child(2) { animation-delay: 0.36s; }
+.hero-name-front .char:nth-child(3) { animation-delay: 0.42s; }
+.hero-name-front .char:nth-child(4) { animation-delay: 0.48s; }
+.hero-name-front .char:nth-child(5) { animation-delay: 0.54s; }
+.hero-name-front .char:nth-child(6) { animation-delay: 0.60s; }
+.hero-name-front .char:nth-child(7) { animation-delay: 0.66s; }
+.hero-name-front .char:nth-child(8) { animation-delay: 0.72s; }
+.hero-name-front .char:nth-child(9) { animation-delay: 0.78s; }
+.hero-name-front .char:nth-child(10) { animation-delay: 0.84s; }
+.hero-name-front .char:nth-child(11) { animation-delay: 0.90s; }
+.hero-name-front .char:nth-child(12) { animation-delay: 0.96s; }
 
 /* 李嘉豪 逐字延迟 */
-.hero-name-back .char:nth-child(1) { animation-delay: 0.4s; }
-.hero-name-back .char:nth-child(2) { animation-delay: 0.55s; }
-.hero-name-back .char:nth-child(3) { animation-delay: 0.7s; }
+.hero-name-back .char:nth-child(1) { animation-delay: 0.3s; }
+.hero-name-back .char:nth-child(2) { animation-delay: 0.42s; }
+.hero-name-back .char:nth-child(3) { animation-delay: 0.54s; }
 
 @keyframes charFlipIn {
   to {
@@ -4062,81 +4033,84 @@ honorCards.forEach(function(card) {
   });
 });
 
-// ========== 首页大标题：3D看向 + 独立阴影层 + 触碰翻转 ==========
+// ========== 首页大标题：3D看向 + 触碰翻转（性能优化版） ==========
 (function() {
   const wrapper = document.getElementById('welcomeWrapper');
   const flipper = document.getElementById('welcomeText');
-  const front = flipper ? flipper.querySelector('.hero-name-front') : null;
-  const back = flipper ? flipper.querySelector('.hero-name-back') : null;
-  if (!wrapper || !flipper || !front || !back) return;
-
-  // 获取伪元素阴影层（通过CSS变量或独立元素控制）
-  // 这里用CSS自定义属性控制伪元素的transform
+  if (!wrapper || !flipper) return;
 
   let currentRX = 0, targetRX = 0;
   let currentRY = 0, targetRY = 0;
-  let currentShadowX = 4, targetShadowX = 4;
-  let currentShadowY = 4, targetShadowY = 4;
   let raf = null;
-  const MAX_TILT = 25;
-  const MAX_SHADOW = 24;
+  let isHovering = false;
+  const MAX_TILT = 12;
 
-  function getCenter() {
-    const rect = flipper.getBoundingClientRect();
-    return {
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2
-    };
+  // 使用缓存的边界矩形，每100ms更新一次
+  let centerX = 0, centerY = 0;
+  let lastRectUpdate = 0;
+
+  function updateCenter() {
+    const now = Date.now();
+    if (now - lastRectUpdate > 100) {
+      const rect = flipper.getBoundingClientRect();
+      centerX = rect.left + rect.width / 2;
+      centerY = rect.top + rect.height / 2;
+      lastRectUpdate = now;
+    }
   }
 
-  document.addEventListener('mousemove', function(e) {
-    const center = getCenter();
-    const dx = e.clientX - center.x;
-    const dy = e.clientY - center.y;
+  function onMouseMove(e) {
+    updateCenter();
+    const dx = e.clientX - centerX;
+    const dy = e.clientY - centerY;
 
-    // 看向角度
     targetRY = (dx / window.innerWidth) * MAX_TILT * 2;
     targetRX = -(dy / window.innerHeight) * MAX_TILT * 2;
     targetRY = Math.max(-MAX_TILT, Math.min(MAX_TILT, targetRY));
     targetRX = Math.max(-MAX_TILT, Math.min(MAX_TILT, targetRX));
 
-    // 光源阴影偏移（相反方向）
-    targetShadowX = -(dx / window.innerWidth) * MAX_SHADOW;
-    targetShadowY = -(dy / window.innerHeight) * MAX_SHADOW;
-
     if (!raf) raf = requestAnimationFrame(tick);
-  });
+  }
 
   function tick() {
     raf = null;
-    currentRX += (targetRX - currentRX) * 0.08;
-    currentRY += (targetRY - currentRY) * 0.08;
-    currentShadowX += (targetShadowX - currentShadowX) * 0.12;
-    currentShadowY += (targetShadowY - currentShadowY) * 0.12;
+    currentRX += (targetRX - currentRX) * 0.12;
+    currentRY += (targetRY - currentRY) * 0.12;
 
-    // 应用看向效果到wrapper
-    wrapper.style.transform = 'rotateX(' + currentRX + 'deg) rotateY(' + currentRY + 'deg)';
+    // 使用 translate3d 触发 GPU 加速
+    wrapper.style.transform = 'translate3d(0,0,0) rotateX(' + currentRX.toFixed(2) + 'deg) rotateY(' + currentRY.toFixed(2) + 'deg)';
 
-    // 应用阴影偏移到CSS自定义属性（伪元素使用）
-    front.style.setProperty('--shadow-x', currentShadowX + 'px');
-    front.style.setProperty('--shadow-y', currentShadowY + 'px');
-    back.style.setProperty('--shadow-x', currentShadowX + 'px');
-    back.style.setProperty('--shadow-y', currentShadowY + 'px');
+    // 只有当数值变化较大时才继续动画
+    if (Math.abs(targetRX - currentRX) > 0.01 || Math.abs(targetRY - currentRY) > 0.01) {
+      raf = requestAnimationFrame(tick);
+    }
   }
+
+  // 事件监听使用 passive 选项
+  document.addEventListener('mousemove', onMouseMove, { passive: true });
 
   document.addEventListener('mouseleave', function() {
     targetRX = 0; targetRY = 0;
-    targetShadowX = 4; targetShadowY = 4;
     if (!raf) raf = requestAnimationFrame(tick);
   });
 
   // 触碰翻转
   flipper.addEventListener('mouseenter', function() {
+    isHovering = true;
     flipper.classList.add('is-flipped');
   });
 
   flipper.addEventListener('mouseleave', function() {
+    isHovering = false;
     flipper.classList.remove('is-flipped');
+  });
+
+  // 页面不可见时停止动画
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden && raf) {
+      cancelAnimationFrame(raf);
+      raf = null;
+    }
   });
 })();
 
