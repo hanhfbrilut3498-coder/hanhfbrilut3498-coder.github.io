@@ -1700,6 +1700,54 @@ body {
   aspect-ratio: auto;
 }
 
+/* 视频懒加载占位符 */
+.video-lazy-placeholder {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.video-lazy-placeholder:hover {
+  background: #141414;
+}
+
+.video-lazy-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--fg-dim);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.video-lazy-placeholder:hover .video-lazy-icon {
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+.video-lazy-text {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--fg-dim);
+  margin-top: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.video-grid-3col .video-lazy-placeholder {
+  aspect-ratio: 9/16;
+  border-bottom: none;
+  border-right: 1.5px solid var(--border);
+}
+
+.video-grid-3col .video-wrapper:last-child .video-lazy-placeholder {
+  border-right: none;
+}
+
 /* 竖屏多视频网格 */
 .video-grid-3col {
   display: grid;
@@ -3326,7 +3374,7 @@ body {
 <section class="hero" id="hero">
   <div class="hero-video-container" id="heroVideoContainer">
     <video class="hero-video" id="heroVideo" autoplay muted loop playsinline>
-      <source src="作品/个人AI作品/动物Vlog.mp4" type="video/mp4">
+      <source src="作品/个人AI作品/动物Vlog_compressed.mp4" type="video/mp4">
     </video>
     <div class="hero-video-overlay"></div>
   </div>
@@ -3843,49 +3891,49 @@ const projectData = {
   // 早期项目
   project3: {
     title: '绽放人生之美',
-    video: '作品/早期项目/Ba03-19-129-0014绽放人生之美.mp4',
+    video: '作品/早期项目/Ba03-19-129-0014绽放人生之美_compressed.mp4',
     content: '<p><strong>项目类型：</strong>全国大学生广告艺术大赛广东省赛</p><p><strong>担任角色：</strong>后期制作</p><p><strong>项目描述：</strong>精心打磨的创意广告作品，以细腻的情感表达和精致的视觉呈现打动评委，荣获广东省二等奖。</p><p><strong>技术亮点：</strong>精细的剪辑节奏控制与色彩校正，营造高级质感。</p>'
   },
   project4: {
     title: '赤尾系列广告',
     portrait: true,
     videos: [
-      '作品/早期项目/赤尾系列/Ba03-19-129-0011哪有心事顾此失彼.mp4',
-      '作品/早期项目/赤尾系列/Ba03-19-129-0012就算生活五味杂陈.mp4',
-      '作品/早期项目/赤尾系列/Ba03-19-129-0013别担心太多.mp4'
+      '作品/早期项目/赤尾系列/Ba03-19-129-0011哪有心事顾此失彼_compressed.mp4',
+      '作品/早期项目/赤尾系列/Ba03-19-129-0012就算生活五味杂陈_compressed.mp4',
+      '作品/早期项目/赤尾系列/Ba03-19-129-0013别担心太多_compressed.mp4'
     ],
     videoLabels: ['哪有心事顾此失彼', '就算生活五味杂陈', '别担心太多'],
     content: '<p><strong>项目类型：</strong>商业广告（两届）</p><p><strong>担任角色：</strong>导演 / 编导 / 拍摄 / 后期</p><p><strong>项目描述：</strong>连续两届参与赤尾品牌广告制作，负责从创意策划、脚本撰写到拍摄执行、后期制作的全流程把控。作品风格独特，品牌识别度高。</p><p><strong>技术亮点：</strong>建立标准化制作流程，确保作品质量与交付效率。</p>'
   },
   project5: {
     title: '梦·非梦',
-    video: '作品/早期项目/梦。非梦.mp4',
+    video: '作品/早期项目/梦。非梦_compressed.mp4',
     content: '<p><strong>项目类型：</strong>设计竞赛作品</p><p><strong>担任角色：</strong>创意 / 后期</p><p><strong>项目描述：</strong>探索梦境与现实边界的创意短片，荣获蓝桥杯视觉艺术设计大赛三等奖、国青杯艺术设计大赛一等奖。</p><p><strong>技术亮点：</strong>运用多重曝光与后期合成技术，创造超现实视觉效果。</p>'
   },
   project_mg: {
     title: '顺德农商银行MG动画',
-    video: '作品/早期项目/小顺银行MG.mp4',
+    video: '作品/早期项目/小顺银行MG_compressed.mp4',
     content: '<p><strong>项目类型：</strong>MG动画</p><p><strong>担任角色：</strong>动画设计 / 后期</p><p><strong>项目描述：</strong>银行主题MG动画制作，运用动态图形设计语言传达金融理念，通过简洁明快的动画节奏展现银行业务流程与品牌特色。</p><p><strong>技术亮点：</strong>动态图形设计、节奏把控、视觉叙事能力。</p>'
   },
   // 个人AI项目
   ai1: {
     title: '动物vlog',
-    video: '作品/个人AI作品/动物Vlog.mp4',
+    video: '作品/个人AI作品/动物Vlog_compressed.mp4',
     content: '<p><strong>项目类型：</strong>AI视频创作</p><p><strong>担任角色：</strong>AI创作者</p><p><strong>项目描述：</strong>使用AI工具创作的动物主题vlog，探索AI视频生成技术在纪实类内容中的应用。</p><p><strong>使用工具：</strong>可灵AI、Runway、Midjourney</p><p><strong>技术亮点：</strong>AI视频生成、画面一致性控制、叙事节奏把控。</p>'
   },
   ai2: {
     title: '动物访谈',
-    video: '作品/个人AI作品/动物访谈.mp4',
+    video: '作品/个人AI作品/动物访谈_compressed.mp4',
     content: '<p><strong>项目类型：</strong>AI创意短片</p><p><strong>担任角色：</strong>AI创作者</p><p><strong>项目描述：</strong>创意动物访谈短片，竖屏9:16画幅，展现AI叙事能力。</p><p><strong>使用工具：</strong>可灵AI、HeyGen、ChatGPT</p><p><strong>技术亮点：</strong>AI对口型、竖屏叙事、创意脚本设计。</p>'
   },
   ai3: {
     title: '保温杯创意广告',
-    video: '作品/个人AI作品/保温杯.mp4',
+    video: '作品/个人AI作品/保温杯_compressed.mp4',
     content: '<p><strong>项目类型：</strong>AI广告创作</p><p><strong>担任角色：</strong>AI创作者</p><p><strong>项目描述：</strong>AI生成的保温杯产品创意广告，横屏16:9画幅。完全使用AI工具完成从概念到成片的全流程。</p><p><strong>使用工具：</strong>可灵AI、Midjourney、Runway、CapCut</p><p><strong>技术亮点：</strong>AI产品渲染、动态场景生成、商业级画面质量。</p>'
   },
   ai4: {
     title: '可灵AI x 大众速腾 AI创意大赛',
-    video: '作品/个人AI作品/速腾比赛.mp4',
+    video: '作品/个人AI作品/速腾比赛_compressed.mp4',
     content: '<p><strong>项目类型：</strong>AI创意大赛</p><p><strong>担任角色：</strong>AI创作者</p><p><strong>项目描述：</strong>参与可灵AI与大众速腾联合举办的AI创意大赛作品。以"未来出行"为主题，使用AI技术创作汽车广告短片。</p><p><strong>使用工具：</strong>可灵AI、Midjourney、Runway</p><p><strong>技术亮点：</strong>AI汽车渲染、场景氛围营造、品牌理念传达。</p>'
   },
   // 工作项目 - 创意信息流
@@ -3893,9 +3941,9 @@ const projectData = {
     title: '金维他',
     portrait: true,
     videos: [
-      '作品/创意信息流/金维他/1-9 金维他成年男广审.mp4',
-      '作品/创意信息流/金维他/3月17日-金维他烟酰胺广审3.mp4',
-      '作品/创意信息流/金维他/金维他b族广审 2.mp4'
+      '作品/创意信息流/金维他/1-9 金维他成年男广审_compressed.mp4',
+      '作品/创意信息流/金维他/3月17日-金维他烟酰胺广审3_compressed.mp4',
+      '作品/创意信息流/金维他/金维他b族广审 2_compressed.mp4'
     ],
     content: '<p><strong>项目类型：</strong>创意信息流广告</p><p><strong>担任角色：</strong>剪辑 / 创意</p><p><strong>项目描述：</strong>金维他品牌创意信息流广告系列，包含多个版本的创意剪辑，针对不同产品线进行差异化内容设计。</p><p><strong>技术亮点：</strong>精准把握产品卖点，快速剪辑节奏，高转化率内容设计。</p>'
   },
@@ -3903,9 +3951,9 @@ const projectData = {
     title: '三星信息流',
     portrait: true,
     videos: [
-      '作品/创意信息流/三星信息流/4/4.mp4',
-      '作品/创意信息流/三星信息流/6/6.mp4',
-      '作品/创意信息流/三星信息流/AI神洗衣机5系+三星AI神冰箱5系/AI神洗衣机5系+三星AI神冰箱5系.mp4'
+      '作品/创意信息流/三星信息流/4/4_compressed.mp4',
+      '作品/创意信息流/三星信息流/6/6_compressed.mp4',
+      '作品/创意信息流/三星信息流/AI神洗衣机5系+三星AI神冰箱5系/AI神洗衣机5系+三星AI神冰箱5系_compressed.mp4'
     ],
     content: '<p><strong>项目类型：</strong>创意信息流广告</p><p><strong>担任角色：</strong>剪辑 / 创意</p><p><strong>项目描述：</strong>三星AI神洗衣机与冰箱系列信息流广告，展示智能家居产品的科技感与便捷性。</p><p><strong>技术亮点：</strong>产品功能可视化呈现，科技感氛围营造，品牌调性统一。</p>'
   },
@@ -3913,9 +3961,9 @@ const projectData = {
     title: '摩飞',
     portrait: true,
     videos: [
-      '作品/创意信息流/摩飞/1/1.mp4',
-      '作品/创意信息流/摩飞/8/8.mp4',
-      '作品/创意信息流/摩飞/9/9.mp4'
+      '作品/创意信息流/摩飞/1/1_compressed.mp4',
+      '作品/创意信息流/摩飞/8/8_compressed.mp4',
+      '作品/创意信息流/摩飞/9/9_compressed.mp4'
     ],
     content: '<p><strong>项目类型：</strong>创意信息流广告</p><p><strong>担任角色：</strong>剪辑 / 创意</p><p><strong>项目描述：</strong>摩飞品牌创意信息流广告制作，展示小家电产品的品质与生活方式。</p><p><strong>技术亮点：</strong>生活场景化呈现，产品质感强化，情感共鸣设计。</p>'
   },
@@ -3924,9 +3972,9 @@ const projectData = {
     title: '喜满居饭店IP',
     portrait: true,
     videos: [
-      '作品/IP/喜满居饭店IP/环境宣传片/喜满居环境宣传片脚本.mp4',
-      '作品/IP/喜满居饭店IP/荔枝木乳鸽/荔枝木烧鸽.mp4',
-      '作品/IP/喜满居饭店IP/药膳乳鸽/药膳鸽过桥鱼.mp4'
+      '作品/IP/喜满居饭店IP/环境宣传片/喜满居环境宣传片脚本_compressed.mp4',
+      '作品/IP/喜满居饭店IP/荔枝木乳鸽/荔枝木烧鸽_compressed.mp4',
+      '作品/IP/喜满居饭店IP/药膳乳鸽/药膳鸽过桥鱼_compressed.mp4'
     ],
     videoLabels: ['喜满居环境宣传片', '荔枝木乳鸽', '药膳乳鸽'],
     content: '<p><strong>项目类型：</strong>IP孵化 / 本地生活</p><p><strong>担任角色：</strong>剪辑 / 设计</p><p><strong>项目描述：</strong>本地餐饮品牌喜满居的IP孵化项目，包含环境宣传片、荔枝木乳鸽、药膳乳鸽等系列内容。</p><p><strong>技术亮点：</strong>环境氛围营造，美食摄影技巧，故事化叙事。</p>'
@@ -3935,10 +3983,10 @@ const projectData = {
     title: '荣华彩印视频号IP',
     portrait: true,
     videos: [
-      '作品/IP/荣华彩印视频号IP/荣华IP工厂参观长视频.mp4',
-      '作品/IP/荣华彩印视频号IP/荣华口头.mp4',
-      '作品/IP/荣华彩印视频号IP/荣华选题1.mp4',
-      '作品/IP/荣华彩印视频号IP/荣华选题2.mp4'
+      '作品/IP/荣华彩印视频号IP/荣华IP工厂参观长视频_compressed.mp4',
+      '作品/IP/荣华彩印视频号IP/荣华口头_compressed.mp4',
+      '作品/IP/荣华彩印视频号IP/荣华选题1_compressed.mp4',
+      '作品/IP/荣华彩印视频号IP/荣华选题2_compressed.mp4'
     ],
     videoLabels: ['荣华工厂参观长视频', '荣华口头宣传', '荣华选题1', '荣华选题2'],
     content: '<p><strong>项目类型：</strong>IP孵化 / 企业视频号</p><p><strong>担任角色：</strong>剪辑 / 后期</p><p><strong>项目描述：</strong>荣华彩印视频号IP孵化项目，包含工厂参观长视频、口头宣传及多支选题内容，助力企业品牌在视频号平台建立内容矩阵。</p><p><strong>技术亮点：</strong>企业形象塑造，内容选题策划，多风格叙事切换，视频号运营思维。</p>'
@@ -3946,12 +3994,12 @@ const projectData = {
   // 工作项目 - 主图视频
   work_xiaotiane: {
     title: '小天鹅滚筒',
-    video: '作品/主图/小天鹅滚筒.mp4',
+    video: '作品/主图/小天鹅滚筒_compressed.mp4',
     content: '<p><strong>项目类型：</strong>电商主图视频</p><p><strong>担任角色：</strong>后期 / 设计</p><p><strong>项目描述：</strong>小天鹅滚筒洗衣机电商主图视频，提升商品转化率与视觉吸引力。</p><p><strong>技术亮点：</strong>3秒内抓住用户注意力，产品卖点可视化，品牌调性统一。</p>'
   },
   work_dianreitan: {
     title: '电热毯',
-    video: '作品/主图/电热毯.mp4',
+    video: '作品/主图/电热毯_compressed.mp4',
     content: '<p><strong>项目类型：</strong>电商主图视频</p><p><strong>担任角色：</strong>后期 / 设计</p><p><strong>项目描述：</strong>电热毯产品电商主图视频制作，突出产品功能与使用场景。</p><p><strong>技术亮点：</strong>产品功能演示，舒适感营造，购买决策引导。</p>'
   }
 };
@@ -4517,21 +4565,29 @@ function openModal(key) {
   var html = '';
 
   if (project.portrait && project.videos) {
-    // 竖屏多视频：3列网格
+    // 竖屏多视频：3列网格，懒加载（点击后加载）
     html += '<div class="video-grid-3col">';
     project.videos.forEach(function(videoSrc, index) {
       var label = project.videoLabels ? project.videoLabels[index] : '';
+      var videoId = 'lazy-video-' + key + '-' + index;
       html += '<div class="video-wrapper">' +
-        '<video controls preload="metadata">' +
-        '<source src="' + videoSrc + '" type="video/mp4"></video>' +
+        '<div class="video-lazy-placeholder" data-video-id="' + videoId + '" data-src="' + videoSrc + '" onclick="loadLazyVideo(this)">' +
+        '<div class="video-lazy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg></div>' +
+        '<div class="video-lazy-text">点击加载视频</div>' +
+        '</div>' +
+        '<video id="' + videoId + '" controls preload="none" style="display:none;"></video>' +
         (label ? '<div class="video-label">' + label + '</div>' : '') +
         '</div>';
     });
     html += '</div>';
   } else if (project.video) {
-    // 横屏单视频
-    html += '<video class="modal-video-full" controls preload="metadata">' +
-      '<source src="' + project.video + '" type="video/mp4"></video>';
+    // 横屏单视频，懒加载
+    var videoId = 'lazy-video-' + key;
+    html += '<div class="video-lazy-placeholder" data-video-id="' + videoId + '" data-src="' + project.video + '" onclick="loadLazyVideo(this)">' +
+      '<div class="video-lazy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg></div>' +
+      '<div class="video-lazy-text">点击加载视频</div>' +
+      '</div>' +
+      '<video id="' + videoId + '" class="modal-video-full" controls preload="none" style="display:none;"></video>';
   }
 
   // 元数据网格
@@ -4549,6 +4605,22 @@ function openModal(key) {
     overlay.classList.add('active');
   });
   document.body.style.overflow = 'hidden';
+}
+
+// ========== 懒加载视频 ==========
+function loadLazyVideo(placeholder) {
+  var videoId = placeholder.getAttribute('data-video-id');
+  var videoSrc = placeholder.getAttribute('data-src');
+  var video = document.getElementById(videoId);
+  if (!video) return;
+
+  // 创建source元素并加载视频
+  video.innerHTML = '<source src="' + videoSrc + '" type="video/mp4">';
+  video.style.display = '';
+  video.load();
+
+  // 隐藏占位符
+  placeholder.style.display = 'none';
 }
 
 function closeModal(event) {
