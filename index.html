@@ -4001,6 +4001,21 @@ const projectData = {
     title: '电热毯',
     video: '作品/主图/电热毯_compressed.mp4',
     content: '<p><strong>项目类型：</strong>电商主图视频</p><p><strong>担任角色：</strong>后期 / 设计</p><p><strong>项目描述：</strong>电热毯产品电商主图视频制作，突出产品功能与使用场景。</p><p><strong>技术亮点：</strong>产品功能演示，舒适感营造，购买决策引导。</p>'
+  },
+  work_huadi_i11x9t: {
+    title: '华帝i11X9T烟机',
+    video: '作品/主图/华帝i11X9T烟机主图视频 -字幕版50M_compressed.mp4',
+    content: '<p><strong>项目类型：</strong>电商主图视频</p><p><strong>担任角色：</strong>后期 / 设计</p><p><strong>项目描述：</strong>华帝i11X9T烟机主图视频，突出产品核心卖点与高端质感，提升电商页面转化率。</p><p><strong>技术亮点：</strong>产品细节特写，功能可视化呈现，品牌调性统一。</p>'
+  },
+  work_huadi_a6: {
+    title: '华帝小旋风系列烟机（A6）',
+    video: '作品/主图/华帝小旋风系列烟机（A6）_compressed.mp4',
+    content: '<p><strong>项目类型：</strong>电商主图视频</p><p><strong>担任角色：</strong>后期 / 设计</p><p><strong>项目描述：</strong>华帝小旋风系列A6烟机主图视频，展现产品强劲吸力与时尚外观设计。</p><p><strong>技术亮点：</strong>动态效果展示，产品卖点提炼，视觉冲击力营造。</p>'
+  },
+  work_huadi_a8: {
+    title: '华帝追风系列烟机（A8）',
+    video: '作品/主图/华帝追风系列烟机（A8）_compressed.mp4',
+    content: '<p><strong>项目类型：</strong>电商主图视频</p><p><strong>担任角色：</strong>后期 / 设计</p><p><strong>项目描述：</strong>华帝追风系列A8烟机主图视频，聚焦智能科技与用户体验，打造高端厨电形象。</p><p><strong>技术亮点：</strong>智能功能演示，场景化呈现，品质感塑造。</p>'
   }
 };
 
@@ -4472,9 +4487,12 @@ function openProjectPanel(category) {
       { key: 'work_ronghua_all', title: '荣华彩印视频号IP', meta: '竖屏 · 4支' }
     ]);
     // 主图视频
-    html += buildCategoryGroup('主图视频', '2个产品 · 横屏视频', [
+    html += buildCategoryGroup('主图视频', '5个产品 · 横屏视频', [
       { key: 'work_xiaotiane', title: '小天鹅滚筒', meta: '横屏视频' },
-      { key: 'work_dianreitan', title: '电热毯', meta: '横屏视频' }
+      { key: 'work_dianreitan', title: '电热毯', meta: '横屏视频' },
+      { key: 'work_huadi_i11x9t', title: '华帝i11X9T烟机', meta: '横屏视频' },
+      { key: 'work_huadi_a6', title: '华帝小旋风系列烟机（A6）', meta: '横屏视频' },
+      { key: 'work_huadi_a8', title: '华帝追风系列烟机（A8）', meta: '横屏视频' }
     ]);
   } else if (category === 'ai') {
     title.textContent = '项目';
